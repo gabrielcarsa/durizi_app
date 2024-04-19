@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "166073500937",
+    "firebase_url": "https://durizi-investimentos-default-rtdb.firebaseio.com",
+    "project_id": "durizi-investimentos",
+    "storage_bucket": "durizi-investimentos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166073500937:android:20d57aba21807edb763fd8",
+        "android_client_info": {
+          "package_name": "com.ghctecnologia.durizi_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe2BYYMT5o0Iaf17eJhVVlasrVBL1u37U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
