@@ -43,8 +43,8 @@ class ClientesProvider extends ChangeNotifier {
 
       if (clienteComCPF != null) {
         _clienteAtual = clienteComCPF;
+        return clienteComCPF;
       }
-      return clienteComCPF; // Retorna o cliente encontrado ou null se não encontrado
     } catch (e) {
       return null;
     }

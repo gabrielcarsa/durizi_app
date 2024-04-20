@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/ClienteProvider.dart';
 
@@ -10,6 +11,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // Para formatar em número
+  final NumberFormat formatadorMoeda =
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
   //controller dos campos do form
   final TextEditingController _cpfController = TextEditingController();
 
@@ -21,10 +26,6 @@ class _HomeState extends State<Home> {
 
   //Função para validar login
   void login() {
-    setState(() {
-      msgError = _cpfController.text.isEmpty ? 'Campo CPF é obrigatório' : '';
-    });
-
     if (_cpfController.text.isNotEmpty) {
       try {
         setState(() {
@@ -38,6 +39,9 @@ class _HomeState extends State<Home> {
           setState(() {
             msgError = e.toString();
           });
+        });
+        setState(() {
+          msgError = 'CPF não encontrado!';
         });
       } catch (e) {
         setState(() {
@@ -94,10 +98,12 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: SizedBox(
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         height: MediaQuery.of(context).size.height * 1,
         width: MediaQuery.of(context).size.width * 1,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /*Text(
               clienteProvider.clienteAtual!.nome,
@@ -111,7 +117,10 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            Text('${clienteProvider.clienteAtual!.saldo?.last.valor ?? 0}',  style: Theme.of(context).textTheme.headline1,),
+            Text(
+              formatadorMoeda.format(clienteProvider.clienteAtual!.saldo?.last.valor ?? 0),
+              style: Theme.of(context).textTheme.headline1,
+            ),
           ],
         ),
       ),
