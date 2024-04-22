@@ -1,9 +1,8 @@
-import 'package:durizi_app/pages/home.dart';
+import 'package:durizi_app/pages/login.dart';
 import 'package:durizi_app/providers/ClienteProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 import 'layout/temas.dart';
 
 void main() async {
@@ -43,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Durizi Investimentos App',
       theme: _isDarkMode ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const Home(),
+      home: const Login(),
     );
   }
 }

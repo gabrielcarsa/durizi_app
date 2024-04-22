@@ -1,75 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
+import '../widgets/grafico_evolucao.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  //Saldos
+  List<Saldo> saldosMesesDiferentes = [];
+
   // Para formatar em número
   final NumberFormat formatadorMoeda =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
-  //controller dos campos do form
-  final TextEditingController _cpfController = TextEditingController();
+  @override
+  void initState() {
+    final clienteProvider =
+    Provider.of<ClientesProvider>(context, listen: false);
 
-  //form
-  final _formKey = GlobalKey<FormState>();
+    super.initState();
+    // Lista para armazenar os meses já encontrados
+    List<String> mesesEncontrados = [];
 
-  //Variaveis de erro
-  String msgError = '';
+    // Iterar sobre a lista de saldos do cliente
+    for (Saldo saldo in clienteProvider.clienteAtual?.saldo ?? []) {
+      // Obter o mês da data do saldo
+      String mesAtual = saldo.data.substring(3, 5);
 
-  //Função para validar login
-  void login() {
-    if (_cpfController.text.isNotEmpty) {
-      try {
-        setState(() {
-          msgError = '';
-        });
-        final clienteProvider =
-            Provider.of<ClientesProvider>(context, listen: false);
-        clienteProvider
-            .consultarCPFExistente(_cpfController.text)
-            .catchError((e) {
-          setState(() {
-            msgError = e.toString();
-          });
-        });
-        setState(() {
-          msgError = 'CPF não encontrado!';
-        });
-      } catch (e) {
-        setState(() {
-          msgError = e.toString();
-        });
+      // Verificar se o mês não está na lista de meses encontrados
+      if (!mesesEncontrados.contains(mesAtual)) {
+        // Adicionar o saldo à lista de saldos de meses diferentes
+        saldosMesesDiferentes.add(saldo);
+
+        // Adicionar o mês à lista de meses encontrados
+        mesesEncontrados.add(mesAtual);
       }
     }
+
+    // Ordenar a lista de saldos por data
+    saldosMesesDiferentes.sort((a, b) {
+      // Dividir as strings de data em partes
+      List<String> partesDataA = a.data.split('/');
+      List<String> partesDataB = b.data.split('/');
+
+      // Construir objetos DateTime a partir das partes da data
+      DateTime dataA = DateTime(int.parse(partesDataA[2]), int.parse(partesDataA[1]), int.parse(partesDataA[0]));
+      DateTime dataB = DateTime(int.parse(partesDataB[2]), int.parse(partesDataB[1]), int.parse(partesDataB[0]));
+
+      // Comparar as datas e retornar o resultado
+      return dataA.compareTo(dataB);
+    });
+
+
+    // Atualizar o estado com a lista de saldos de meses diferentes
+    setState(() {
+      saldosMesesDiferentes = saldosMesesDiferentes;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Consumer<ClientesProvider>(
-        builder: (context, clienteProvider, _) {
-          if (clienteProvider.clienteAtual != null) {
-            return buildAuthScreen();
-          } else {
-            return buildUnAuthScreen();
-          }
-        },
-      ),
-    );
-  }
-
-  //Tela logado
-  Scaffold buildAuthScreen() {
     final clienteProvider =
-        Provider.of<ClientesProvider>(context, listen: false);
+    Provider.of<ClientesProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -118,153 +118,17 @@ class _HomeState extends State<Home> {
               ),
             ),
             Text(
-              formatadorMoeda.format(clienteProvider.clienteAtual!.saldo?.last.valor ?? 0),
+              formatadorMoeda
+                  .format(clienteProvider.clienteAtual!.saldo?.last.valor ?? 0),
               style: Theme.of(context).textTheme.headline1,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  //Tela não logado
-  Scaffold buildUnAuthScreen() {
-    return Scaffold(
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height * 1,
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: MediaQuery.of(context).viewInsets.bottom == 0
-                  ? MediaQuery.of(context).size.height * 0.7
-                  : MediaQuery.of(context).size.height * 0.3,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/logo-em-branco.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  MediaQuery.of(context).viewInsets.bottom == 0
-                      ? RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.headline1,
-                            children: <TextSpan>[
-                              const TextSpan(
-                                text: 'Invista conosco e\ntenha um ',
-                              ),
-                              TextSpan(
-                                text: 'lucro \nde 5% ao mês',
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  MediaQuery.of(context).viewInsets.bottom == 0
-                      ? ElevatedButton(
-                          onPressed: () {},
-                          style: ButtonStyle(
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 30),
-                            ),
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).accentColor),
-                          ),
-                          child: Text(
-                            'Fazer simulação',
-                            style: Theme.of(context).textTheme.button,
-                          ),
-                        )
-                      : const SizedBox(),
-                ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15.0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 1,
+                child: LineChartSample2(listaDeSaldos: saldosMesesDiferentes),
               ),
             ),
-            Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 1,
-                color: Theme.of(context).backgroundColor,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        msgError,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: TextFormField(
-                          controller: _cpfController,
-                          decoration: const InputDecoration(
-                            filled: true,
-                            hintText: 'Digite seu CPF...',
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Preencha o CPF';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              login();
-                            }
-                          },
-                          style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(1),
-                            shadowColor:
-                                MaterialStateProperty.all(Colors.white),
-                            backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).accentColor),
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                          ),
-                          child: Text(
-                            'Entrar',
-                            style: Theme.of(context).textTheme.button,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
