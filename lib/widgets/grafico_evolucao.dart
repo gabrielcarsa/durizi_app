@@ -12,30 +12,23 @@ class LineChartSample2 extends StatefulWidget {
 }
 
 class _LineChartSample2State extends State<LineChartSample2> {
-  List<Color> gradientColors = [
-    Colors.cyan,
-    const Color.fromRGBO(43, 0, 255, 100),
-  ];
-
-  // Para formatar em número
-  final NumberFormat formatadorMoeda =
-  NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   bool showAvg = false;
 
   @override
   Widget build(BuildContext context) {
-    print('\n\n ${widget.listaDeSaldos.map((e) => e.valor)} \n\n');
+
+    //print('\n\n ${widget.listaDeSaldos.map((e) => e.valor)} \n\n');
     return Stack(
       children: <Widget>[
         AspectRatio(
           aspectRatio: 1.70,
           child: Padding(
             padding: const EdgeInsets.only(
-              right: 18,
-              left: 12,
-              top: 24,
-              bottom: 12,
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 0,
             ),
             child: LineChart(
               mainData(),
@@ -54,19 +47,24 @@ class _LineChartSample2State extends State<LineChartSample2> {
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.white,
-          fontSize: 16,
+          fontSize: 10,
         ),
       ),
     );
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
+    String formattedValue = (value * 1000).toInt().toString(); // Converte para milhares e transforma em string
+    if (formattedValue.length > 3) {
+      // Se o valor tiver mais de três dígitos, adicione "mil" após os primeiros dígitos
+      formattedValue = formattedValue.substring(0, formattedValue.length - 3) + "mil";
+    }
     return Text(
-      formatadorMoeda.format((value * 1000).toInt()), // Converte para milhares
+      formattedValue,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.white,
-        fontSize: 15,
+        fontSize: 10,
       ),
       textAlign: TextAlign.left,
     );
@@ -91,6 +89,11 @@ class _LineChartSample2State extends State<LineChartSample2> {
         minSaldo = saldo.valor.toDouble();
       }
     }
+
+    List<Color> gradientColors = [
+      Theme.of(context).primaryColor,
+      Theme.of(context).accentColor,
+    ];
 
     return LineChartData(
       gridData: FlGridData(
@@ -123,9 +126,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
+            //reservedSize: 30,
             interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
+            //getTitlesWidget: bottomTitleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
@@ -133,7 +136,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
             showTitles: true,
             interval: 10,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 100,
+            reservedSize: 30,
           ),
         ),
       ),
@@ -144,7 +147,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
       minX: 0,
       maxX: widget.listaDeSaldos.length.toDouble() - 1, // Atualiza o valor máximo do eixo x
       minY: minSaldo / 1000,
-      maxY: maxSaldo / 1000, // Pode ser ajustado conforme necessário
+      maxY: (maxSaldo / 1000) + 5, // Pode ser ajustado conforme necessário
       lineBarsData: [
         LineChartBarData(
           spots: spots,

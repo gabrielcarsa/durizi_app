@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
+import '../providers/TipoTemaProvider.dart';
 import '../widgets/grafico_evolucao.dart';
 
 class Home extends StatefulWidget {
@@ -24,7 +25,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     final clienteProvider =
-    Provider.of<ClientesProvider>(context, listen: false);
+        Provider.of<ClientesProvider>(context, listen: false);
 
     super.initState();
     // Lista para armazenar os meses já encontrados
@@ -34,7 +35,6 @@ class _HomeState extends State<Home> {
     for (Saldo saldo in clienteProvider.clienteAtual?.saldo ?? []) {
       // Obter o mês da data do saldo
       String mesAtual = saldo.data.substring(3, 5);
-
       // Verificar se o mês não está na lista de meses encontrados
       if (!mesesEncontrados.contains(mesAtual)) {
         // Adicionar o saldo à lista de saldos de meses diferentes
@@ -45,21 +45,6 @@ class _HomeState extends State<Home> {
       }
     }
 
-    // Ordenar a lista de saldos por data
-    saldosMesesDiferentes.sort((a, b) {
-      // Dividir as strings de data em partes
-      List<String> partesDataA = a.data.split('/');
-      List<String> partesDataB = b.data.split('/');
-
-      // Construir objetos DateTime a partir das partes da data
-      DateTime dataA = DateTime(int.parse(partesDataA[2]), int.parse(partesDataA[1]), int.parse(partesDataA[0]));
-      DateTime dataB = DateTime(int.parse(partesDataB[2]), int.parse(partesDataB[1]), int.parse(partesDataB[0]));
-
-      // Comparar as datas e retornar o resultado
-      return dataA.compareTo(dataB);
-    });
-
-
     // Atualizar o estado com a lista de saldos de meses diferentes
     setState(() {
       saldosMesesDiferentes = saldosMesesDiferentes;
@@ -69,7 +54,27 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final clienteProvider =
-    Provider.of<ClientesProvider>(context, listen: false);
+        Provider.of<ClientesProvider>(context, listen: false);
+    clienteProvider.clienteAtual?.saldo?.forEach((element) {
+      print(element.valor);
+    });
+
+    Cliente clienteAtual = clienteProvider.clienteAtual!;
+    double evolucaoSaldo = 0;
+    double diferenca = 0;
+
+    if (clienteAtual.saldo != null && clienteAtual.saldo!.isNotEmpty) {
+      // Acesso seguro ao saldo quando não é nulo e não está vazio
+      double saldoAtual = clienteAtual.saldo!.last.valor;
+      double saldoInicio = clienteAtual.saldo!.first.valor;
+      diferenca = saldoAtual - saldoInicio;
+      evolucaoSaldo = (diferenca / saldoInicio) * 100;
+      // Arredondando para duas casas decimais
+      evolucaoSaldo = double.parse(evolucaoSaldo.toStringAsFixed(2));
+    }
+
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -105,10 +110,6 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*Text(
-              clienteProvider.clienteAtual!.nome,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),*/
             const Text(
               'Patrimônio',
               style: TextStyle(
@@ -123,11 +124,205 @@ class _HomeState extends State<Home> {
               style: Theme.of(context).textTheme.headline1,
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 1,
-                child: LineChartSample2(listaDeSaldos: saldosMesesDiferentes),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child:
+                        LineChartSample2(listaDeSaldos: saldosMesesDiferentes),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '+ ${formatadorMoeda.format(diferenca)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        'de ganhos',
+                        style: themeProvider.obterTema() != ThemeData.dark()
+                            ? const TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF9F9F9F),
+                                fontWeight: FontWeight.w400,
+                              )
+                            : const TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF333333),
+                                fontWeight: FontWeight.w400,
+                              ),
+                      ),
+                      const SizedBox(
+                        height: 8.0,
+                      ),
+                      Text(
+                        '+ $evolucaoSaldo %',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.green,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        'de evolução',
+                        style: themeProvider.obterTema() != ThemeData.dark()
+                            ? const TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF9F9F9F),
+                                fontWeight: FontWeight.w400,
+                              )
+                            : const TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF333333),
+                                fontWeight: FontWeight.w400,
+                              ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ),
+            Text(
+              'Ações',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            const SizedBox(
+              height: 5.0,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.attach_money,
+                        size: 40,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Aporte',
+                      style: TextStyle(
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.money_off,
+                        size: 40,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Saque',
+                      style: TextStyle(
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.document_scanner_sharp,
+                        size: 40,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Contrato',
+                      style: TextStyle(
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.info_outline,
+                        size: 40,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Sobre',
+                      style: TextStyle(
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15.0,
+            ),
+            Text(
+              'Recados',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            const SizedBox(
+              height: 5.0,
             ),
           ],
         ),

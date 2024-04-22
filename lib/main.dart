@@ -1,5 +1,6 @@
 import 'package:durizi_app/pages/login.dart';
 import 'package:durizi_app/providers/ClienteProvider.dart';
+import 'package:durizi_app/providers/TipoTemaProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider<ClientesProvider>(
           create: (_) => ClientesProvider(),
+        ),
+        ChangeNotifierProvider<TipoTemaProvider>(
+          create: (_) => TipoTemaProvider(),
         ),
       ],
       child: const MyApp(),
@@ -28,19 +32,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isDarkMode = true;
-
-  void alterarModo() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    // Acessa o Provider para obter o tipo de tema atual
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
+
     return MaterialApp(
       title: 'Durizi Investimentos App',
-      theme: _isDarkMode ? darkTheme : lightTheme,
+      theme: themeProvider.obterTema() != ThemeData.dark() ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
       home: const Login(),
     );

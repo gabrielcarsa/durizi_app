@@ -31,7 +31,7 @@ final lightTheme = ThemeData(
 final darkTheme = ThemeData(
   primaryColor: const Color(0xFFF8FF1F),
   accentColor: const Color(0xFFF8FF1F),
-  backgroundColor: const Color(0xFF1B1B1B),
+  backgroundColor: const Color(0xFF212121),
   scaffoldBackgroundColor: const Color(0xFF131314),
   indicatorColor: const Color(0xFFFFFFFF),
   dividerColor: Colors.black26,

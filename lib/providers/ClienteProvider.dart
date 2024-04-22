@@ -42,6 +42,23 @@ class ClientesProvider extends ChangeNotifier {
       final clienteComCPF = _clientes.firstWhere((c) => c.cpf == cpf);
 
       if (clienteComCPF != null) {
+
+        // Ordenar a lista de saldos por data
+        clienteComCPF.saldo?.sort((a, b) {
+          // Dividir as strings de data em partes
+          List<String> partesDataA = a.data.split('/');
+          List<String> partesDataB = b.data.split('/');
+
+          // Construir objetos DateTime a partir das partes da data
+          DateTime dataA = DateTime(int.parse(partesDataA[2]),
+              int.parse(partesDataA[1]), int.parse(partesDataA[0]));
+          DateTime dataB = DateTime(int.parse(partesDataB[2]),
+              int.parse(partesDataB[1]), int.parse(partesDataB[0]));
+
+          // Comparar as datas e retornar o resultado
+          return dataA.compareTo(dataB);
+        });
+
         _clienteAtual = clienteComCPF;
         return clienteComCPF;
       }
