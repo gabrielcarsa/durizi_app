@@ -1,5 +1,6 @@
 import 'package:durizi_app/pages/login.dart';
 import 'package:durizi_app/providers/ClienteProvider.dart';
+import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:durizi_app/providers/TipoTemaProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,6 +18,9 @@ void main() async {
         ),
         ChangeNotifierProvider<TipoTemaProvider>(
           create: (_) => TipoTemaProvider(),
+        ),
+        ChangeNotifierProvider<RecadoProvider>(
+          create: (_) => RecadoProvider(),
         ),
       ],
       child: const MyApp(),

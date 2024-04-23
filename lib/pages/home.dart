@@ -1,3 +1,5 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +23,8 @@ class _HomeState extends State<Home> {
   // Para formatar em número
   final NumberFormat formatadorMoeda =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -55,9 +59,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final clienteProvider =
         Provider.of<ClientesProvider>(context, listen: false);
-    clienteProvider.clienteAtual?.saldo?.forEach((element) {
-      print(element.valor);
-    });
 
     Cliente clienteAtual = clienteProvider.clienteAtual!;
     double evolucaoSaldo = 0;
@@ -74,6 +75,7 @@ class _HomeState extends State<Home> {
     }
 
     final themeProvider = Provider.of<TipoTemaProvider>(context);
+    final recados = Provider.of<RecadoProvider>(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -103,228 +105,279 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-        height: MediaQuery.of(context).size.height * 1,
-        width: MediaQuery.of(context).size.width * 1,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Patrimônio',
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Color(0xFF9F9F9F),
-                fontWeight: FontWeight.w400,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Patrimônio',
+                style: TextStyle(
+                  fontSize: 14.0,
+                  color: Color(0xFF9F9F9F),
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            Text(
-              formatadorMoeda
-                  .format(clienteProvider.clienteAtual!.saldo?.last.valor ?? 0),
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child:
-                        LineChartSample2(listaDeSaldos: saldosMesesDiferentes),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '+ ${formatadorMoeda.format(diferenca)}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.green,
-                          fontWeight: FontWeight.w700,
+              Text(
+                formatadorMoeda.format(
+                    clienteProvider.clienteAtual!.saldo?.last.valor ?? 0),
+                style: Theme.of(context).textTheme.headline1,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: LineChartSample2(
+                          listaDeSaldos: saldosMesesDiferentes),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '+ ${formatadorMoeda.format(diferenca)}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.green,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'de ganhos',
-                        style: themeProvider.obterTema() != ThemeData.dark()
-                            ? const TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xFF9F9F9F),
-                                fontWeight: FontWeight.w400,
-                              )
-                            : const TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xFF333333),
-                                fontWeight: FontWeight.w400,
-                              ),
+                        Text(
+                          'de ganhos',
+                          style: themeProvider.obterTema() != ThemeData.dark()
+                              ? const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xFF9F9F9F),
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xFF333333),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                        ),
+                        const SizedBox(
+                          height: 8.0,
+                        ),
+                        Text(
+                          '+ $evolucaoSaldo %',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.green,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          'de evolução',
+                          style: themeProvider.obterTema() != ThemeData.dark()
+                              ? const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xFF9F9F9F),
+                                  fontWeight: FontWeight.w400,
+                                )
+                              : const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xFF333333),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                'Ações',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.attach_money,
+                          size: 40,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
                       const SizedBox(
-                        height: 8.0,
+                        height: 5.0,
                       ),
                       Text(
-                        '+ $evolucaoSaldo %',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.green,
-                          fontWeight: FontWeight.w700,
+                        'Aporte',
+                        style: TextStyle(
+                          color: Theme.of(context).indicatorColor,
                         ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.money_off,
+                          size: 40,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
                       Text(
-                        'de evolução',
-                        style: themeProvider.obterTema() != ThemeData.dark()
-                            ? const TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xFF9F9F9F),
-                                fontWeight: FontWeight.w400,
-                              )
-                            : const TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xFF333333),
-                                fontWeight: FontWeight.w400,
-                              ),
+                        'Saque',
+                        style: TextStyle(
+                          color: Theme.of(context).indicatorColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.document_scanner_sharp,
+                          size: 40,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        'Contrato',
+                        style: TextStyle(
+                          color: Theme.of(context).indicatorColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.info_outline,
+                          size: 40,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        'Sobre',
+                        style: TextStyle(
+                          color: Theme.of(context).indicatorColor,
+                        ),
                       ),
                     ],
                   ),
                 ],
               ),
-            ),
-            Text(
-              'Ações',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        Icons.attach_money,
-                        size: 40,
-                        color: Theme.of(context).primaryColor,
-                      ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              Text(
+                'Recados',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              Consumer<RecadoProvider>(
+                builder: (context, recadoProvider, _) {
+                  return SizedBox(
+                    height: 80,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: recadoProvider.recados.length,
+                      itemBuilder: (context, index) {
+                        return CarouselSlider(
+                          items: recados.recados.map((r) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width * 0.5,
+                                  padding: const EdgeInsets.all(12.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color:
+                                            Theme.of(context).dividerColor),
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    borderRadius:
+                                        BorderRadius.circular(10.0),
+                                  ),
+                                  child: Text(
+                                    r.recado,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2,
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                          options: CarouselOptions(
+                            viewportFraction: 0.6,
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 5),
+                            autoPlayAnimationDuration: const Duration(milliseconds: 2500),
+                            enlargeCenterPage: false,
+                          ),
+                        );
+                      },
+                      pageSnapping: true,
                     ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Aporte',
-                      style: TextStyle(
-                        color: Theme.of(context).indicatorColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        Icons.money_off,
-                        size: 40,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Saque',
-                      style: TextStyle(
-                        color: Theme.of(context).indicatorColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        Icons.document_scanner_sharp,
-                        size: 40,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Contrato',
-                      style: TextStyle(
-                        color: Theme.of(context).indicatorColor,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  width: 10.0,
-                ),
-                Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Icon(
-                        Icons.info_outline,
-                        size: 40,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Sobre',
-                      style: TextStyle(
-                        color: Theme.of(context).indicatorColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-            Text(
-              'Recados',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-          ],
+
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

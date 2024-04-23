@@ -25,6 +25,11 @@ final lightTheme = ThemeData(
       fontSize: 16.0,
       color: Color(0xFF000000),
     ),
+    bodyText2: TextStyle(
+      fontSize: 15.0,
+      fontWeight: FontWeight.w400,
+      color: Color(0xFF575757),
+    ),
   ),
 );
 
@@ -34,7 +39,7 @@ final darkTheme = ThemeData(
   backgroundColor: const Color(0xFF212121),
   scaffoldBackgroundColor: const Color(0xFF131314),
   indicatorColor: const Color(0xFFFFFFFF),
-  dividerColor: Colors.black26,
+  dividerColor: const Color(0xFFA1A1A1),
   textTheme: const TextTheme(
     headline1: TextStyle(
       fontSize: 36.0,
@@ -53,6 +58,11 @@ final darkTheme = ThemeData(
     bodyText1: TextStyle(
       fontSize: 16.0,
       color: Color(0xFFFFFFFF),
+    ),
+    bodyText2: TextStyle(
+      fontSize: 15.0,
+      fontWeight: FontWeight.w400,
+      color: Color(0xFFB7B7B7),
     ),
   ),
 );
