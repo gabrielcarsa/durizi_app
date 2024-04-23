@@ -51,6 +51,11 @@ final darkTheme = ThemeData(
       fontWeight: FontWeight.w700,
       color: Color(0xFFF8FF1F),
     ),
+    headline3: TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.w700,
+      color: Color(0xFFFFFFFF),
+    ),
     button: TextStyle(
       fontSize: 16.0,
       color: Color(0xFF000000),

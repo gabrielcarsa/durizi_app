@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:durizi_app/pages/saqueScreen.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -236,16 +237,26 @@ class _HomeState extends State<Home> {
                   ),
                   Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.money_off,
-                          size: 40,
-                          color: Theme.of(context).primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SaqueScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.money_off,
+                            size: 40,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -340,22 +351,20 @@ class _HomeState extends State<Home> {
                             return Builder(
                               builder: (BuildContext context) {
                                 return Container(
-                                  width: MediaQuery.of(context).size.width * 0.5,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
                                   padding: const EdgeInsets.all(12.0),
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        color:
-                                            Theme.of(context).dividerColor),
+                                        color: Theme.of(context).dividerColor),
                                     color: Theme.of(context)
                                         .scaffoldBackgroundColor,
-                                    borderRadius:
-                                        BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: Text(
                                     r.recado,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
                                   ),
                                 );
                               },
@@ -365,14 +374,14 @@ class _HomeState extends State<Home> {
                             viewportFraction: 0.6,
                             autoPlay: true,
                             autoPlayInterval: const Duration(seconds: 5),
-                            autoPlayAnimationDuration: const Duration(milliseconds: 2500),
+                            autoPlayAnimationDuration:
+                                const Duration(milliseconds: 2500),
                             enlargeCenterPage: false,
                           ),
                         );
                       },
                       pageSnapping: true,
                     ),
-
                   );
                 },
               ),

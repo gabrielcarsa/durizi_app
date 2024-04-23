@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../models/Saque.dart';
@@ -17,7 +19,7 @@ class SaqueProvider extends ChangeNotifier {
   // exibir Saques
   Future<void> _carregarSaques() async {
     _saquesRef.onValue.listen((event) {
-      final data = event.snapshot.value;
+      final data = jsonDecode(jsonEncode(event.snapshot.value));
       if (data != null && data is Map) {
         _saques = data.entries
             .map((entry) => Saque.fromJson(entry.value, entry.key))

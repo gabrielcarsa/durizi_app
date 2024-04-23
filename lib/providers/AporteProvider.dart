@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../models/Aporte.dart';
@@ -17,7 +19,7 @@ class AporteProvider extends ChangeNotifier {
   // exibir Aportes
   Future<void> _carregarAportes() async {
     _aportesRef.onValue.listen((event) {
-      final data = event.snapshot.value;
+      final data = jsonDecode(jsonEncode(event.snapshot.value));
       if (data != null && data is Map) {
         _aportes = data.entries
             .map((entry) => Aporte.fromJson(entry.value, entry.key))
