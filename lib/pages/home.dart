@@ -36,19 +36,35 @@ class _HomeState extends State<Home> {
     // Lista para armazenar os meses já encontrados
     List<String> mesesEncontrados = [];
 
+    // Armazenar saldo do Mes Atual para depois exibir o mais atual
+    List<Saldo> saldosMesAtual = [];
+
+    //Variavel para obter o mes e ano da data de hoje
+    String mesAnoAtual = DateFormat('MM/yyyy').format(DateTime.now());
+
     // Iterar sobre a lista de saldos do cliente
     for (Saldo saldo in clienteProvider.clienteAtual?.saldo ?? []) {
-      // Obter o mês da data do saldo
-      String mesAtual = saldo.data.substring(3, 5);
-      // Verificar se o mês não está na lista de meses encontrados
-      if (!mesesEncontrados.contains(mesAtual)) {
-        // Adicionar o saldo à lista de saldos de meses diferentes
-        saldosMesesDiferentes.add(saldo);
 
-        // Adicionar o mês à lista de meses encontrados
-        mesesEncontrados.add(mesAtual);
+      // Obter o mês da data do saldo do for
+      String mesAtualSaldo = saldo.data.substring(3, 5);
+
+      // Obter o mẽs e ano da data do saldo do for
+      String mesAnoAtualSaldo = saldo.data.substring(3);
+
+      // Verificar se o mês não está na lista de meses encontrados
+      if (!mesesEncontrados.contains(mesAtualSaldo)) {
+        //Verificar se não é o mes Atual
+        if(mesAnoAtualSaldo != mesAnoAtual){
+          // Adicionar o mês à lista de meses encontrados
+          mesesEncontrados.add(mesAtualSaldo);
+          // Adicionar o saldo à lista de saldos de meses diferentes
+          saldosMesesDiferentes.add(saldo);
+        }else{
+          saldosMesAtual.add(saldo);
+        }
       }
     }
+    saldosMesesDiferentes.add(saldosMesAtual.last);
 
     // Atualizar o estado com a lista de saldos de meses diferentes
     setState(() {
@@ -77,7 +93,6 @@ class _HomeState extends State<Home> {
 
     final themeProvider = Provider.of<TipoTemaProvider>(context);
     final recados = Provider.of<RecadoProvider>(context);
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -124,7 +139,7 @@ class _HomeState extends State<Home> {
               ),
               Text(
                 formatadorMoeda.format(
-                    clienteProvider.clienteAtual!.saldo?.last.valor ?? 0),
+                    saldosMesesDiferentes.last.valor),
                 style: Theme.of(context).textTheme.headline1,
               ),
               Padding(
@@ -239,6 +254,8 @@ class _HomeState extends State<Home> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          saldosMesesDiferentes.forEach((e){ return print(e.data);});
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
