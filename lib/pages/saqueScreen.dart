@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../models/Saque.dart';
 import '../providers/ClienteProvider.dart';
 import '../providers/SaqueProvider.dart';
 import 'home.dart';
@@ -15,7 +16,13 @@ class SaqueScreen extends StatefulWidget {
 class _SaqueScreenState extends State<SaqueScreen> {
   // Para formatar em número
   final NumberFormat formatadorMoeda =
-  NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
+  //controller
+  final TextEditingController _valorController = TextEditingController();
+
+  //form
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,47 +47,155 @@ class _SaqueScreenState extends State<SaqueScreen> {
                 width: MediaQuery.of(context).size.width * 1,
                 child: Column(
                   children: [
-                    Consumer<SaqueProvider>(
-                      builder: (context, saqueProvider, _) {
-                        List<Widget> saqueWidgets =
-                            saqueProvider.saques.map((saque) {
-                          return Column(
-                            children: [
-                              ListTile(
-                                leading: Text(
-                                  saque.data,
-                                  style: Theme.of(context).textTheme.bodyText1,
+                    Container(
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: TextFormField(
+                                controller: _valorController,
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  hintText: 'Digite um valor para sacar',
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(),
                                 ),
-                                title: Text(
-                                  formatadorMoeda.format(saque.valor),
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                                trailing: Text(
-                                  saque.isAprovado == true
-                                      ? 'Aprovado'
-                                      : (saque.isRejeitado == true
-                                          ? 'Rejeitado'
-                                          : 'Em análise'),
-                                  style: TextStyle(
-                                    color: saque.isAprovado == true
-                                        ? Colors.green
-                                        : (saque.isRejeitado == true
-                                            ? Colors.red
-                                            : Theme.of(context).dividerColor),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Preencha o valor';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Se os campos forem válidos
+                                  if (_formKey.currentState!.validate()) {
+                                    //data atual
+                                    final agora = DateTime.now();
+                                    final formatter = DateFormat('dd/MM/yyyy');
+                                    final dataFormatada =
+                                        formatter.format(agora);
+
+                                    final saqueSalvar = Saque(
+                                      valor:
+                                          double.parse(_valorController.text),
+                                      data: dataFormatada,
+                                      clienteId:
+                                          clienteProvider.clienteAtual!.id!,
+                                    );
+
+                                    // Salvando Cliente no Firebase
+                                    Provider.of<SaqueProvider>(context,
+                                            listen: false)
+                                        .adicionarSaque(saqueSalvar);
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  padding: MaterialStateProperty.all(
+                                    const EdgeInsets.symmetric(vertical: 5),
                                   ),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Theme.of(context).accentColor),
+                                ),
+                                child: Text(
+                                  'Solicitar Saque',
+                                  style: Theme.of(context).textTheme.button,
                                 ),
                               ),
-                              Divider(
-                                color: Theme.of(context).dividerColor,
-                              ),
-                            ],
-                          );
-                        }).toList();
-                        return Column(
-                          children: saqueWidgets,
-                        );
-                      },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 1,
+                        padding: const EdgeInsets.only(top: 15.0),
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                          color: Theme.of(context).backgroundColor,
+                        ),
+                        child: ListView(
+                          children: [
+                            Text(
+                              'Histórico',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            const SizedBox(
+                              height: 15.0,
+                            ),
+                            Consumer<SaqueProvider>(
+                              builder: (context, saqueProvider, _) {
+                                // Ordenar a lista de saques pela data mais recente
+                                final saquesOrdenados = List.of(saqueProvider.saques)..sort((a, b) => b.data.compareTo(a.data));
+                                List<Widget> saqueWidgets =
+                                    saquesOrdenados.map((saque) {
+                                  if (saque.clienteId ==
+                                      clienteProvider.clienteAtual!.id) {
+                                    return Column(
+                                      children: [
+                                        ListTile(
+                                          leading: Text(
+                                            saque.data,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                          title: Text(
+                                            formatadorMoeda.format(saque.valor),
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                          trailing: Text(
+                                            saque.isAprovado == true
+                                                ? 'Aprovado'
+                                                : (saque.isRejeitado == true
+                                                    ? 'Rejeitado'
+                                                    : 'Em análise'),
+                                            style: TextStyle(
+                                              color: saque.isAprovado == true
+                                                  ? Colors.green
+                                                  : (saque.isRejeitado == true
+                                                      ? Colors.red
+                                                      : Theme.of(context)
+                                                          .dividerColor),
+                                            ),
+                                          ),
+                                        ),
+                                        Divider(
+                                          color: Theme.of(context).dividerColor,
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                }).toList();
+                                return Column(
+                                  children: saqueWidgets,
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),

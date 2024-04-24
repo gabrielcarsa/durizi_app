@@ -4,7 +4,7 @@ class Saque {
   final String data;
   String? dataResposta;
   final double valor;
-  final String observacao;
+  final String? observacao;
   bool? isAprovado;
   bool? isRejeitado;
 
@@ -14,7 +14,7 @@ class Saque {
     required this.data,
     this.dataResposta,
     required this.valor,
-    required this.observacao,
+    this.observacao,
     this.isAprovado,
     this.isRejeitado,
   });
