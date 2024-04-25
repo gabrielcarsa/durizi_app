@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       title: 'Durizi Investimentos App',
-      theme: themeProvider.obterTema() != ThemeData.dark() ? darkTheme : lightTheme,
+      theme: themeProvider.obterTema().brightness == Brightness.dark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
       home: const Login(),
     );

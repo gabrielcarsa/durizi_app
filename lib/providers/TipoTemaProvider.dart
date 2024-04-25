@@ -6,7 +6,7 @@ enum ThemeType { light, dark }
 // Classe para o provedor de tema
 class TipoTemaProvider with ChangeNotifier {
   // Variável privada para armazenar o tema atual
-  ThemeType _themeType = ThemeType.light;
+  ThemeType _themeType = ThemeType.dark;
 
   // Método para obter o tema atual
   ThemeType get themeType => _themeType;
@@ -21,10 +21,10 @@ class TipoTemaProvider with ChangeNotifier {
   // Método para obter o ThemeData com base no tema atual
   ThemeData obterTema() {
     switch (_themeType) {
-      case ThemeType.light:
-        return ThemeData.light();
       case ThemeType.dark:
         return ThemeData.dark();
+      case ThemeType.light:
+        return ThemeData.light();
       default:
         return ThemeData.dark();
     }

@@ -73,6 +73,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    //Providers
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
+    final recadosProvider = Provider.of<RecadoProvider>(context);
     final clienteProvider =
         Provider.of<ClientesProvider>(context, listen: false);
 
@@ -90,8 +93,6 @@ class _HomeState extends State<Home> {
       evolucaoSaldo = double.parse(evolucaoSaldo.toStringAsFixed(2));
     }
 
-    final themeProvider = Provider.of<TipoTemaProvider>(context);
-    final recados = Provider.of<RecadoProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       endDrawer: Drawer(
@@ -147,7 +148,9 @@ class _HomeState extends State<Home> {
               title: Row(
                 children: [
                   Icon(
-                    Icons.light_mode,
+                    themeProvider.obterTema().brightness == Brightness.dark
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
                     color: Theme.of(context).primaryColor,
                   ),
                   const SizedBox(
@@ -160,6 +163,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               onTap: () {
+                //alterar tema
                 themeProvider.alterarTema();
               },
             ),
@@ -180,7 +184,8 @@ class _HomeState extends State<Home> {
                 ],
               ),
               onTap: () {
-                
+                //logout
+                clienteProvider.logout();
               },
             ),
             Row(
@@ -347,10 +352,6 @@ class _HomeState extends State<Home> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          saldosMesesDiferentes.forEach((e) {
-                            return print(e.data);
-                          });
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -459,7 +460,7 @@ class _HomeState extends State<Home> {
                       itemCount: recadoProvider.recados.length,
                       itemBuilder: (context, index) {
                         return CarouselSlider(
-                          items: recados.recados.map((r) {
+                          items: recadosProvider.recados.map((r) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return Container(

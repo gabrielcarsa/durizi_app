@@ -66,4 +66,9 @@ class ClientesProvider extends ChangeNotifier {
       return null;
     }
   }
+
+  void logout(){
+    _clienteAtual = null;
+    notifyListeners();
+  }
 }
