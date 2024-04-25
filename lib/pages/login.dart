@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:durizi_app/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +14,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   // Para formatar em número
   final NumberFormat formatadorMoeda =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
@@ -23,32 +24,41 @@ class _LoginState extends State<Login> {
   //form
   final _formKey = GlobalKey<FormState>();
 
+  // Adicione uma variável de estado booleana para controlar o estado de carregamento
+  bool _isLoadingLogin = false;
+
   //Variaveis de erro
   String msgError = '';
 
   //Função para validar login
-  void login() {
+  void login() async {
+    final clienteProvider =
+        Provider.of<ClientesProvider>(context, listen: false);
+
     if (_cpfController.text.isNotEmpty) {
       try {
-        setState(() {
-          msgError = '';
-        });
-        final clienteProvider =
-            Provider.of<ClientesProvider>(context, listen: false);
-        clienteProvider
-            .consultarCPFExistente(_cpfController.text)
-            .then((_) {
+        clienteProvider.consultarCPFExistente(_cpfController.text).then((e) {
           setState(() {
-            msgError = ''; // Limpar a mensagem de erro se o CPF for encontrado
+            if (e == null) {
+              msgError = 'Cliente não encontrado!';
+              _isLoadingLogin = false;
+            } else {
+              msgError = '';
+              _isLoadingLogin = false;
+            }
           });
         }).catchError((e) {
           setState(() {
-            msgError = e.toString(); // Define a mensagem de erro se ocorrer algum erro na consulta
+            msgError = e
+                .toString(); // Define a mensagem de erro se ocorrer algum erro na consulta
+            _isLoadingLogin = false;
           });
         });
       } catch (e) {
         setState(() {
-          msgError = e.toString(); // Define a mensagem de erro em caso de exceção
+          msgError =
+              e.toString(); // Define a mensagem de erro em caso de exceção
+          _isLoadingLogin = false;
         });
       }
     }
@@ -181,11 +191,18 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              login();
-                            }
-                          },
+                          onPressed: _isLoadingLogin
+                              ? null
+                              : () {
+                                  if (_formKey.currentState!.validate()) {
+                                    setState(() {
+                                      _isLoadingLogin = true;
+                                    });
+                                    Timer(const Duration(seconds: 1), () {
+                                      login();
+                                    });
+                                  }
+                                },
                           style: ButtonStyle(
                             elevation: MaterialStateProperty.all(1),
                             shadowColor:
@@ -196,10 +213,15 @@ class _LoginState extends State<Login> {
                               const EdgeInsets.symmetric(vertical: 15),
                             ),
                           ),
-                          child: Text(
-                            'Entrar',
-                            style: Theme.of(context).textTheme.button,
-                          ),
+                          child: _isLoadingLogin
+                              ? CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                )
+                              : Text(
+                                  'Entrar',
+                                  style: Theme.of(context).textTheme.button,
+                                ),
                         ),
                       ),
                     ],
