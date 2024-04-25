@@ -44,7 +44,6 @@ class _HomeState extends State<Home> {
 
     // Iterar sobre a lista de saldos do cliente
     for (Saldo saldo in clienteProvider.clienteAtual?.saldo ?? []) {
-
       // Obter o mês da data do saldo do for
       String mesAtualSaldo = saldo.data.substring(3, 5);
 
@@ -54,12 +53,12 @@ class _HomeState extends State<Home> {
       // Verificar se o mês não está na lista de meses encontrados
       if (!mesesEncontrados.contains(mesAtualSaldo)) {
         //Verificar se não é o mes Atual
-        if(mesAnoAtualSaldo != mesAnoAtual){
+        if (mesAnoAtualSaldo != mesAnoAtual) {
           // Adicionar o mês à lista de meses encontrados
           mesesEncontrados.add(mesAtualSaldo);
           // Adicionar o saldo à lista de saldos de meses diferentes
           saldosMesesDiferentes.add(saldo);
-        }else{
+        } else {
           saldosMesAtual.add(saldo);
         }
       }
@@ -95,6 +94,111 @@ class _HomeState extends State<Home> {
     final recados = Provider.of<RecadoProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      endDrawer: Drawer(
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 2,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.account_circle_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(
+                        width: 8.0,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Olá, ',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            TextSpan(
+                              text: clienteAtual.nome,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.light_mode,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    'Alterar para modo claro',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ],
+              ),
+              onTap: () {
+                themeProvider.alterarTema();
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.logout,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    'Sair',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ],
+              ),
+              onTap: () {
+                
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Desenvolvido por GHC Tecnologia',
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Color(0xFF9F9F9F),
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         toolbarHeight: 100,
         elevation: 0,
@@ -110,16 +214,6 @@ class _HomeState extends State<Home> {
           ),
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.menu,
-              color: Theme.of(context).indicatorColor,
-              size: 30,
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -138,8 +232,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Text(
-                formatadorMoeda.format(
-                    saldosMesesDiferentes.last.valor),
+                formatadorMoeda.format(saldosMesesDiferentes.last.valor),
                 style: Theme.of(context).textTheme.headline1,
               ),
               Padding(
@@ -254,7 +347,9 @@ class _HomeState extends State<Home> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          saldosMesesDiferentes.forEach((e){ return print(e.data);});
+                          saldosMesesDiferentes.forEach((e) {
+                            return print(e.data);
+                          });
 
                           Navigator.push(
                             context,
