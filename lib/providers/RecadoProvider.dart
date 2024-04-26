@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-
 import '../models/Recado.dart';
 
 class RecadoProvider extends ChangeNotifier {
@@ -10,8 +8,11 @@ class RecadoProvider extends ChangeNotifier {
   late DatabaseReference _recadosRef;
 
   List<Recado> _recados = [];
-
   List<Recado> get recados => _recados;
+
+  //gerenciar carregamento
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   RecadoProvider() {
     _recadosRef = _database.child('recados');
@@ -20,6 +21,7 @@ class RecadoProvider extends ChangeNotifier {
 
   // exibir Recados
   Future<void> _loadRecados() async {
+    _isLoading = true;
     _recadosRef.onValue.listen((event) {
       final data = jsonDecode(jsonEncode(event.snapshot.value));
       if (data != null && data is Map) {
@@ -29,6 +31,7 @@ class RecadoProvider extends ChangeNotifier {
       } else {
         _recados = [];
       }
+      _isLoading = false;
       notifyListeners();
     });
   }

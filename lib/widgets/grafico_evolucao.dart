@@ -147,7 +147,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
       minX: 0,
       maxX: widget.listaDeSaldos.length.toDouble() - 1, // Atualiza o valor máximo do eixo x
       minY: minSaldo / 1000,
-      //maxY: (maxSaldo / 1000) + 10, // Pode ser ajustado conforme necessário
+      maxY: (maxSaldo / 1000) + 10, // Pode ser ajustado conforme necessário
       lineBarsData: [
         LineChartBarData(
           spots: spots,

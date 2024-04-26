@@ -324,7 +324,7 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -402,9 +402,7 @@ class _HomeState extends State<Home> {
                   Column(
                     children: [
                       GestureDetector(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
@@ -471,49 +469,59 @@ class _HomeState extends State<Home> {
               ),
               Consumer<RecadoProvider>(
                 builder: (context, recadoProvider, _) {
-                  return SizedBox(
-                    height: 80,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: recadoProvider.recados.length,
-                      itemBuilder: (context, index) {
-                        return CarouselSlider(
-                          items: recadosProvider.recados.map((r) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  padding: const EdgeInsets.all(12.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Theme.of(context).dividerColor),
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Text(
-                                    r.recado,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ),
-                                );
-                              },
-                            );
-                          }).toList(),
-                          options: CarouselOptions(
-                            viewportFraction: 0.6,
-                            autoPlay: true,
-                            autoPlayInterval: const Duration(seconds: 5),
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 2500),
-                            enlargeCenterPage: false,
+                  return recadoProvider.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      : SizedBox(
+                          height: 80,
+                          child: PageView.builder(
+                            controller: _pageController,
+                            itemCount: recadoProvider.recados.length,
+                            itemBuilder: (context, index) {
+                              return CarouselSlider(
+                                items: recadosProvider.recados.map((r) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        padding: const EdgeInsets.all(12.0),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Theme.of(context)
+                                                  .dividerColor),
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Text(
+                                          r.recado,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }).toList(),
+                                options: CarouselOptions(
+                                  viewportFraction: 0.6,
+                                  autoPlay: true,
+                                  autoPlayInterval: const Duration(seconds: 5),
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 2500),
+                                  enlargeCenterPage: false,
+                                ),
+                              );
+                            },
+                            pageSnapping: true,
                           ),
                         );
-                      },
-                      pageSnapping: true,
-                    ),
-                  );
                 },
               ),
             ],
