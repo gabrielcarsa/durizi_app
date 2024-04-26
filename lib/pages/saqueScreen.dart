@@ -37,6 +37,7 @@ class _SaqueScreenState extends State<SaqueScreen> {
               appBar: AppBar(
                 elevation: 0,
                 centerTitle: true,
+                foregroundColor: Theme.of(context).indicatorColor,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: Text(
                   'Saques',
@@ -105,8 +106,14 @@ class _SaqueScreenState extends State<SaqueScreen> {
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.symmetric(vertical: 5),
                                   ),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
                                   backgroundColor: MaterialStateProperty.all(
-                                      Theme.of(context).accentColor),
+                                      Theme.of(context).primaryColor),
                                 ),
                                 child: Text(
                                   'Solicitar Saque',

@@ -138,8 +138,14 @@ class _LoginState extends State<Login> {
                               const EdgeInsets.symmetric(
                                   vertical: 15, horizontal: 30),
                             ),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
                             backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).accentColor),
+                                Theme.of(context).primaryColor),
                           ),
                           child: Text(
                             'Fazer simulação',
@@ -208,7 +214,13 @@ class _LoginState extends State<Login> {
                             shadowColor:
                                 MaterialStateProperty.all(Colors.white),
                             backgroundColor: MaterialStateProperty.all(
-                                Theme.of(context).accentColor),
+                                Theme.of(context).primaryColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
                             padding: MaterialStateProperty.all(
                               const EdgeInsets.symmetric(vertical: 15),
                             ),

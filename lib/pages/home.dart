@@ -189,9 +189,9 @@ class _HomeState extends State<Home> {
                 clienteProvider.logout();
               },
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
                   'Desenvolvido por GHC Tecnologia',
                   style: TextStyle(

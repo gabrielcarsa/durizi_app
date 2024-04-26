@@ -17,7 +17,7 @@ class AporteScreen extends StatefulWidget {
 class _AporteScreenState extends State<AporteScreen> {
   // Para formatar em número
   final NumberFormat formatadorMoeda =
-  NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   //controller
   final TextEditingController _valorController = TextEditingController();
@@ -38,6 +38,7 @@ class _AporteScreenState extends State<AporteScreen> {
               appBar: AppBar(
                 elevation: 0,
                 centerTitle: true,
+                foregroundColor: Theme.of(context).indicatorColor,
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: Text(
                   'Aportes',
@@ -61,7 +62,8 @@ class _AporteScreenState extends State<AporteScreen> {
                                 controller: _valorController,
                                 decoration: const InputDecoration(
                                   filled: true,
-                                  hintText: 'Digite um valor para fazer um aporte',
+                                  hintText:
+                                      'Digite um valor para fazer um aporte',
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(),
                                 ),
@@ -86,19 +88,19 @@ class _AporteScreenState extends State<AporteScreen> {
                                     final agora = DateTime.now();
                                     final formatter = DateFormat('dd/MM/yyyy');
                                     final dataFormatada =
-                                    formatter.format(agora);
+                                        formatter.format(agora);
 
                                     final aporteSalvar = Aporte(
                                       valor:
-                                      double.parse(_valorController.text),
+                                          double.parse(_valorController.text),
                                       data: dataFormatada,
                                       clienteId:
-                                      clienteProvider.clienteAtual!.id!,
+                                          clienteProvider.clienteAtual!.id!,
                                     );
 
                                     // Salvando Aporte no Firebase
                                     Provider.of<AporteProvider>(context,
-                                        listen: false)
+                                            listen: false)
                                         .adicionarAporte(aporteSalvar);
                                   }
                                 },
@@ -106,8 +108,14 @@ class _AporteScreenState extends State<AporteScreen> {
                                   padding: MaterialStateProperty.all(
                                     const EdgeInsets.symmetric(vertical: 5),
                                   ),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
                                   backgroundColor: MaterialStateProperty.all(
-                                      Theme.of(context).accentColor),
+                                      Theme.of(context).primaryColor),
                                 ),
                                 child: Text(
                                   'Solicitar Aporte',
@@ -150,12 +158,12 @@ class _AporteScreenState extends State<AporteScreen> {
                                 // Exibir lista de aportes
                                 return aporteProvider.isLoading
                                     ? Center(
-                                  child: CircularProgressIndicator(
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                )
-                                    : buildAportesLista(context, aportesOrdenados,
-                                    clienteProvider);
+                                        child: CircularProgressIndicator(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      )
+                                    : buildAportesLista(context,
+                                        aportesOrdenados, clienteProvider);
                               },
                             ),
                           ],
@@ -197,8 +205,8 @@ class _AporteScreenState extends State<AporteScreen> {
                   color: aporte.isAprovado == true
                       ? Colors.green
                       : (aporte.isRejeitado == true
-                      ? Colors.red
-                      : Theme.of(context).dividerColor),
+                          ? Colors.red
+                          : Theme.of(context).dividerColor),
                 ),
               ),
             ),
