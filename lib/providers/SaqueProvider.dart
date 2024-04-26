@@ -11,13 +11,19 @@ class SaqueProvider extends ChangeNotifier {
   List<Saque> _saques = [];
   List<Saque> get saques => _saques;
 
+  //gerenciar carregamento
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+
   SaqueProvider() {
     _saquesRef = _database.child('saques');
-    _carregarSaques();
+    carregarSaques();
   }
 
   // exibir Saques
-  Future<void> _carregarSaques() async {
+  Future<void> carregarSaques() async {
+    _isLoading = true;
     _saquesRef.onValue.listen((event) {
       final data = jsonDecode(jsonEncode(event.snapshot.value));
       if (data != null && data is Map) {
@@ -27,6 +33,7 @@ class SaqueProvider extends ChangeNotifier {
       } else {
         _saques = [];
       }
+      _isLoading = false;
       notifyListeners();
     });
   }

@@ -142,55 +142,19 @@ class _SaqueScreenState extends State<SaqueScreen> {
                             Consumer<SaqueProvider>(
                               builder: (context, saqueProvider, _) {
                                 // Ordenar a lista de saques pela data mais recente
-                                final saquesOrdenados = List.of(saqueProvider.saques)..sort((a, b) => b.data.compareTo(a.data));
-                                List<Widget> saqueWidgets =
-                                    saquesOrdenados.map((saque) {
-                                  if (saque.clienteId ==
-                                      clienteProvider.clienteAtual!.id) {
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          leading: Text(
-                                            saque.data,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                          title: Text(
-                                            formatadorMoeda.format(saque.valor),
-                                            textAlign: TextAlign.center,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                          trailing: Text(
-                                            saque.isAprovado == true
-                                                ? 'Aprovado'
-                                                : (saque.isRejeitado == true
-                                                    ? 'Rejeitado'
-                                                    : 'Em análise'),
-                                            style: TextStyle(
-                                              color: saque.isAprovado == true
-                                                  ? Colors.green
-                                                  : (saque.isRejeitado == true
-                                                      ? Colors.red
-                                                      : Theme.of(context)
-                                                          .dividerColor),
-                                            ),
-                                          ),
+                                final List<Saque> saquesOrdenados = List.of(
+                                    saqueProvider.saques)
+                                  ..sort((a, b) => b.data.compareTo(a.data));
+
+                                // Exibir lista de saques
+                                return saqueProvider.isLoading
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                          color: Theme.of(context).primaryColor,
                                         ),
-                                        Divider(
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                      ],
-                                    );
-                                  } else {
-                                    return const SizedBox();
-                                  }
-                                }).toList();
-                                return Column(
-                                  children: saqueWidgets,
-                                );
+                                      )
+                                    : buildSaquesLista(context, saquesOrdenados,
+                                        clienteProvider);
                               },
                             ),
                           ],
@@ -204,6 +168,49 @@ class _SaqueScreenState extends State<SaqueScreen> {
           }
         },
       ),
+    );
+  }
+
+  Widget buildSaquesLista(BuildContext context, List<Saque> saquesOrdenados,
+      ClientesProvider clienteProvider) {
+    List<Widget> saqueWidgets = saquesOrdenados.map((saque) {
+      if (saque.clienteId == clienteProvider.clienteAtual!.id) {
+        return Column(
+          children: [
+            ListTile(
+              leading: Text(
+                saque.data,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              title: Text(
+                formatadorMoeda.format(saque.valor),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              trailing: Text(
+                saque.isAprovado == true
+                    ? 'Aprovado'
+                    : (saque.isRejeitado == true ? 'Rejeitado' : 'Em análise'),
+                style: TextStyle(
+                  color: saque.isAprovado == true
+                      ? Colors.green
+                      : (saque.isRejeitado == true
+                          ? Colors.red
+                          : Theme.of(context).dividerColor),
+                ),
+              ),
+            ),
+            Divider(
+              color: Theme.of(context).dividerColor,
+            ),
+          ],
+        );
+      } else {
+        return const SizedBox();
+      }
+    }).toList();
+    return Column(
+      children: saqueWidgets,
     );
   }
 }

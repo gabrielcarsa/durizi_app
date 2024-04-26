@@ -11,6 +11,10 @@ class AporteProvider extends ChangeNotifier {
   List<Aporte> _aportes = [];
   List<Aporte> get aportes => _aportes;
 
+  //gerenciar carregamento
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   AporteProvider() {
     _aportesRef = _database.child('aportes');
     _carregarAportes();
@@ -18,6 +22,7 @@ class AporteProvider extends ChangeNotifier {
 
   // exibir Aportes
   Future<void> _carregarAportes() async {
+    _isLoading = true;
     _aportesRef.onValue.listen((event) {
       final data = jsonDecode(jsonEncode(event.snapshot.value));
       if (data != null && data is Map) {
@@ -27,6 +32,7 @@ class AporteProvider extends ChangeNotifier {
       } else {
         _aportes = [];
       }
+      _isLoading = false;
       notifyListeners();
     });
   }

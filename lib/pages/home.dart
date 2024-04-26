@@ -190,8 +190,8 @@ class _HomeState extends State<Home> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
+              children: const [
+                Text(
                   'Desenvolvido por GHC Tecnologia',
                   style: TextStyle(
                     fontSize: 14.0,
@@ -268,7 +268,8 @@ class _HomeState extends State<Home> {
                         ),
                         Text(
                           'de ganhos',
-                          style: themeProvider.obterTema() != ThemeData.dark()
+                          style: themeProvider.obterTema().brightness ==
+                                  Brightness.dark
                               ? const TextStyle(
                                   fontSize: 14.0,
                                   color: Color(0xFF9F9F9F),
@@ -293,7 +294,8 @@ class _HomeState extends State<Home> {
                         ),
                         Text(
                           'de evolução',
-                          style: themeProvider.obterTema() != ThemeData.dark()
+                          style: themeProvider.obterTema().brightness ==
+                                  Brightness.dark
                               ? const TextStyle(
                                   fontSize: 14.0,
                                   color: Color(0xFF9F9F9F),
@@ -388,16 +390,21 @@ class _HomeState extends State<Home> {
                   ),
                   Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.document_scanner_sharp,
-                          size: 40,
-                          color: Theme.of(context).primaryColor,
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.document_scanner_sharp,
+                            size: 40,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
                       const SizedBox(
