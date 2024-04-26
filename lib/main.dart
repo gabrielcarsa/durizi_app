@@ -1,4 +1,5 @@
 import 'package:durizi_app/pages/login.dart';
+import 'package:durizi_app/providers/AporteProvider.dart';
 import 'package:durizi_app/providers/ClienteProvider.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:durizi_app/providers/SaqueProvider.dart';
@@ -25,6 +26,9 @@ void main() async {
         ),
         ChangeNotifierProvider<SaqueProvider>(
           create: (_) => SaqueProvider(),
+        ),
+        ChangeNotifierProvider<AporteProvider>(
+          create: (_) => AporteProvider(),
         ),
       ],
       child: const MyApp(),

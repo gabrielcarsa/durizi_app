@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:durizi_app/pages/aporteScreen.dart';
 import 'package:durizi_app/pages/saqueScreen.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:flutter/material.dart';
@@ -322,30 +323,40 @@ class _HomeState extends State<Home> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(10),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AporteScreen(),
                         ),
-                        child: Icon(
-                          Icons.attach_money,
-                          size: 40,
-                          color: Theme.of(context).primaryColor,
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.attach_money,
+                            size: 40,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5.0,
-                      ),
-                      Text(
-                        'Aporte',
-                        style: TextStyle(
-                          color: Theme.of(context).indicatorColor,
+                        const SizedBox(
+                          height: 5.0,
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Aporte',
+                          style: TextStyle(
+                            color: Theme.of(context).indicatorColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     width: 10.0,
