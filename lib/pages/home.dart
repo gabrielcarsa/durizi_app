@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:durizi_app/pages/aporteScreen.dart';
+import 'package:durizi_app/pages/contratoScreen.dart';
 import 'package:durizi_app/pages/saqueScreen.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,11 @@ class _HomeState extends State<Home> {
   void initState() {
     final clienteProvider =
         Provider.of<ClientesProvider>(context, listen: false);
+    //Atualizar saldo
+    clienteProvider.atualizarSaldoDiario(clienteProvider.clienteAtual!);
 
     super.initState();
+
     // Lista para armazenar os meses já encontrados
     List<String> mesesEncontrados = [];
 
@@ -53,10 +57,11 @@ class _HomeState extends State<Home> {
 
       // Verificar se o mês não está na lista de meses encontrados
       if (!mesesEncontrados.contains(mesAtualSaldo)) {
+        // Adicionar o mês à lista de meses encontrados
+        mesesEncontrados.add(mesAtualSaldo);
+
         //Verificar se não é o mes Atual
         if (mesAnoAtualSaldo != mesAnoAtual) {
-          // Adicionar o mês à lista de meses encontrados
-          mesesEncontrados.add(mesAtualSaldo);
           // Adicionar o saldo à lista de saldos de meses diferentes
           saldosMesesDiferentes.add(saldo);
         } else {
@@ -64,12 +69,14 @@ class _HomeState extends State<Home> {
         }
       }
     }
-    saldosMesesDiferentes.add(saldosMesAtual.last);
-
+    if (saldosMesAtual.isNotEmpty) {
+      saldosMesesDiferentes.add(saldosMesAtual.last);
+    }
     // Atualizar o estado com a lista de saldos de meses diferentes
     setState(() {
       saldosMesesDiferentes = saldosMesesDiferentes;
     });
+
   }
 
   @override
@@ -238,7 +245,9 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Text(
-                formatadorMoeda.format(saldosMesesDiferentes.last.valor),
+                saldosMesesDiferentes.isEmpty
+                    ? 'R\$ 0'
+                    : formatadorMoeda.format(saldosMesesDiferentes.last.valor),
                 style: Theme.of(context).textTheme.headline1,
               ),
               Padding(
@@ -402,7 +411,16 @@ class _HomeState extends State<Home> {
                   Column(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ContratoScreen(
+                                cliente: clienteAtual,
+                              ),
+                            ),
+                          );
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(

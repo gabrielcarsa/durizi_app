@@ -59,6 +59,7 @@ class _SaqueScreenState extends State<SaqueScreen> {
                               width: MediaQuery.of(context).size.width * 0.7,
                               child: TextFormField(
                                 controller: _valorController,
+                                style: const TextStyle(color: Colors.black),
                                 decoration: const InputDecoration(
                                   filled: true,
                                   hintText: 'Digite um valor para sacar',

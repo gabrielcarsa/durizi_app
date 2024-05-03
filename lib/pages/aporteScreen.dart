@@ -60,6 +60,7 @@ class _AporteScreenState extends State<AporteScreen> {
                               width: MediaQuery.of(context).size.width * 0.7,
                               child: TextFormField(
                                 controller: _valorController,
+                                style: const TextStyle(color: Colors.black),
                                 decoration: const InputDecoration(
                                   filled: true,
                                   hintText:

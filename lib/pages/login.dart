@@ -177,6 +177,7 @@ class _LoginState extends State<Login> {
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: TextFormField(
                           controller: _cpfController,
+                          style: const TextStyle(color: Colors.black),
                           decoration: const InputDecoration(
                             filled: true,
                             hintText: 'Digite seu CPF...',

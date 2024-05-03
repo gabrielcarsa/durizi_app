@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models/Cliente.dart';
 
 class ClientesProvider extends ChangeNotifier {
@@ -13,6 +15,11 @@ class ClientesProvider extends ChangeNotifier {
 
   Cliente? _clienteAtual;
   Cliente? get clienteAtual => _clienteAtual;
+
+  //gerenciar carregamento
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
 
   ClientesProvider() {
     _clientesRef = _database.child('clientes');
@@ -58,6 +65,7 @@ class ClientesProvider extends ChangeNotifier {
           // Comparar as datas e retornar o resultado
           return dataA.compareTo(dataB);
         });
+        print(clienteComCPF.nome);
 
         _clienteAtual = clienteComCPF;
         return clienteComCPF;
@@ -67,8 +75,59 @@ class ClientesProvider extends ChangeNotifier {
     }
   }
 
+  // deslogar
   void logout(){
     _clienteAtual = null;
     notifyListeners();
+  }
+
+  //Carregando contrato
+  Future<String?> obterPDFUrlFromStorage(String idCliente) async {
+    try {
+      Reference pdfReference =
+      FirebaseStorage.instance.ref().child('contratos/$idCliente.pdf');
+      String pdfUrl = await pdfReference.getDownloadURL();
+      return pdfUrl;
+    } catch (e) {
+      print('Erro ao obter URL do PDF do Storage: $e');
+      return null;
+    }
+  }
+
+  // Atualiza automatico saldo cliente
+  Future<void> atualizarSaldoDiario(Cliente cliente) async {
+    // Encontra o cliente na lista local
+    final clienteIndex = _clientes.indexWhere((c) => c.id == cliente.id);
+    if (clienteIndex != -1) {
+      final agora = DateTime.now();
+      final formatter = DateFormat('dd/MM/yyyy');
+      final dataFormatada = formatter.format(agora);
+
+      // Adiciona o novo saldo ao cliente localmente
+      double saldoAtual = cliente.saldo?.last.valor ?? 0;
+      String ultimaData = cliente.saldo?.last.data ?? dataFormatada;
+      DateTime dataUltimaAtualizacao = formatter.parse(ultimaData);
+      int diferencaDiasData = agora.difference(dataUltimaAtualizacao).inDays;
+
+      // Se já passou mais de um dia desde a última atualização
+      if (diferencaDiasData > 0) {
+        double reajusteDiario = cliente.reajusteDiario;
+        double novoSaldoValor =
+            ((reajusteDiario * diferencaDiasData) * saldoAtual) + saldoAtual;
+
+        Saldo novoSaldo = Saldo(
+            data: dataFormatada,
+            valor: double.parse(novoSaldoValor.toStringAsFixed(2)));
+
+        _clientes[clienteIndex].saldo?.add(novoSaldo);
+        notifyListeners();
+        // Atualiza os dados do cliente no banco de dados
+        await _clientesRef
+            .child(cliente.id!)
+            .child('saldo')
+            .push()
+            .set(novoSaldo.toJson());
+      }
+    }
   }
 }
