@@ -76,7 +76,6 @@ class _HomeState extends State<Home> {
     setState(() {
       saldosMesesDiferentes = saldosMesesDiferentes;
     });
-
   }
 
   @override
@@ -213,6 +212,7 @@ class _HomeState extends State<Home> {
         ),
       ),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Theme.of(context).indicatorColor,),
         toolbarHeight: 100,
         elevation: 0,
         title: Container(
