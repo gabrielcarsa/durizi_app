@@ -33,7 +33,7 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
-  primaryColor: const Color(0xFFF8FF1F),
+  primaryColor: const Color(0xFF5964FB),
   backgroundColor: const Color(0xFF212121),
   scaffoldBackgroundColor: const Color(0xFF131314),
   indicatorColor: const Color(0xFFFFFFFF),
@@ -47,7 +47,7 @@ final darkTheme = ThemeData(
     headline2: TextStyle(
       fontSize: 36.0,
       fontWeight: FontWeight.w700,
-      color: Color(0xFFF8FF1F),
+      color: Color(0xFF5964FB),
     ),
     headline3: TextStyle(
       fontSize: 20.0,
@@ -56,7 +56,7 @@ final darkTheme = ThemeData(
     ),
     button: TextStyle(
       fontSize: 16.0,
-      color: Color(0xFF000000),
+      color: Color(0xFFFFFFFF),
     ),
     bodyText1: TextStyle(
       fontSize: 16.0,

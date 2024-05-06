@@ -41,8 +41,6 @@ dependencies:
   fl_chart: ^0.62.0
   carousel_slider: ^4.2.1
   firebase_storage: ^11.7.4
-  syncfusion_flutter_pdfviewer: ^25.1.42
-  flutter_downloader: ^1.11.7
 
 dev_dependencies:
   flutter_test:

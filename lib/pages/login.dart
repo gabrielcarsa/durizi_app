@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:durizi_app/pages/home.dart';
+import 'package:durizi_app/pages/simulacaoInvestimento.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -117,10 +118,10 @@ class _LoginState extends State<Login> {
                             style: Theme.of(context).textTheme.headline1,
                             children: <TextSpan>[
                               const TextSpan(
-                                text: 'Invista conosco e\ntenha um ',
+                                text: 'Invista hoje, construa\n',
                               ),
                               TextSpan(
-                                text: 'lucro \nde 5% ao mês',
+                                text: 'seu amanhã',
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                             ],
@@ -132,7 +133,15 @@ class _LoginState extends State<Login> {
                   ),
                   MediaQuery.of(context).viewInsets.bottom == 0
                       ? ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            //Ir para tela de simulação
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SimulacaoInvestimento(),
+                              ),
+                            );
+                          },
                           style: ButtonStyle(
                             padding: MaterialStateProperty.all(
                               const EdgeInsets.symmetric(

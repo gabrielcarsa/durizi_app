@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:provider/provider.dart';
 import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
@@ -59,34 +58,27 @@ class _ContratoScreenState extends State<ContratoScreen> {
                       return Center(
                         child: Text('Erro: ${snapshot.error}'),
                       );
-                    }  else if (snapshot.hasData && snapshot.data != null) {
+                    } else if (snapshot.hasData && snapshot.data != null) {
                       // PDF disponível
                       return _isLoadingPDF
                           ? const CircularProgressIndicator()
                           : Center(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            final pdfUrl = snapshot.data!;
-                            final taskId = await FlutterDownloader.enqueue(
-                              url: pdfUrl,
-                              savedDir: 'directory_name',
-                              fileName: '${widget.cliente.nome}.pdf',
-                              showNotification: true, // Mostrar notificação no sistema quando o download estiver concluído.
-                              openFileFromNotification: true, // Abra o arquivo diretamente quando o download estiver concluído (funciona apenas em Android).
+                              child: ElevatedButton(
+                                onPressed: () async {
+
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                    const Color(0xFF5964FB),
+                                  ),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 20.0),
+                                  child: Text('Baixar o contrato'),
+                                ),
+                              ),
                             );
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              const Color(0xFF5964FB),
-                            ),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 20.0),
-                            child: Text('Baixar o contrato'),
-                          ),
-                        ),
-                      );
                     } else {
                       // PDF não disponível
                       return const Center(
