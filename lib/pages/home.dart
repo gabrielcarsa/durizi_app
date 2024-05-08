@@ -33,6 +33,7 @@ class _HomeState extends State<Home> {
   void initState() {
     final clienteProvider =
         Provider.of<ClientesProvider>(context, listen: false);
+
     //Atualizar saldo
     clienteProvider.atualizarSaldoDiario(clienteProvider.clienteAtual!);
 
