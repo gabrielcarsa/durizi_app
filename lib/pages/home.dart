@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:durizi_app/pages/aporteScreen.dart';
 import 'package:durizi_app/pages/contratoScreen.dart';
 import 'package:durizi_app/pages/saqueScreen.dart';
+import 'package:durizi_app/pages/sobreScreen.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -213,16 +215,32 @@ class _HomeState extends State<Home> {
         ),
       ),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Theme.of(context).indicatorColor,),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).indicatorColor,
+        ),
         toolbarHeight: 100,
         elevation: 0,
-        title: Container(
+        title: themeProvider.obterTema().brightness == Brightness.dark
+            ? Container(
           height: 100.0,
           width: 100.0,
           alignment: Alignment.center,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/logo-em-branco.png"),
+              image: AssetImage(
+                  "assets/images/logo-em-branco.png"),
+              fit: BoxFit.fill,
+            ),
+          ),
+        )
+            : Container(
+          height: 100.0,
+          width: 100.0,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image:
+              AssetImage("assets/images/logo_light.png"),
               fit: BoxFit.fill,
             ),
           ),
@@ -451,16 +469,26 @@ class _HomeState extends State<Home> {
                   ),
                   Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.info_outline,
-                          size: 40,
-                          color: Theme.of(context).primaryColor,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SobreScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.info_outline,
+                            size: 40,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
                       const SizedBox(

@@ -44,9 +44,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
       axisSide: meta.axisSide,
       child: Text(
         widget.listaDeSaldos[value.toInt()].data, // Extrai o mês da data
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: Theme.of(context).indicatorColor,
           fontSize: 10,
         ),
       ),
@@ -61,9 +61,9 @@ class _LineChartSample2State extends State<LineChartSample2> {
     }
     return Text(
       formattedValue,
-      style: const TextStyle(
+      style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: Colors.white,
+        color: Theme.of(context).indicatorColor,
         fontSize: 10,
       ),
       textAlign: TextAlign.left,
@@ -104,13 +104,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color:Colors.white,
+            color:Theme.of(context).indicatorColor,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
-            color: Colors.white,
+            color: Theme.of(context).indicatorColor,
             strokeWidth: 1,
           );
         },

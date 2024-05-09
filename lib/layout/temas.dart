@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
   primaryColor: const Color(0xFF5964FB),
-  backgroundColor: const Color(0xFFFFFFFF),
+  backgroundColor: const Color(0xFFEDEDED),
+  scaffoldBackgroundColor: const Color(0xFFFFFFFF),
   dividerColor: Colors.black26,
   indicatorColor: const Color(0xFF000000),
   textTheme: const TextTheme(
