@@ -41,7 +41,7 @@ class _SaqueScreenState extends State<SaqueScreen> {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: Text(
                   'Saques',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
               body: SizedBox(
@@ -118,7 +118,7 @@ class _SaqueScreenState extends State<SaqueScreen> {
                                 ),
                                 child: Text(
                                   'Solicitar Saque',
-                                  style: Theme.of(context).textTheme.button,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               ),
                             ),
@@ -142,7 +142,7 @@ class _SaqueScreenState extends State<SaqueScreen> {
                             Text(
                               'Histórico',
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             const SizedBox(
                               height: 15.0,
@@ -188,12 +188,12 @@ class _SaqueScreenState extends State<SaqueScreen> {
             ListTile(
               leading: Text(
                 saque.data,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               title: Text(
                 formatadorMoeda.format(saque.valor),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: Text(
                 saque.isAprovado == true

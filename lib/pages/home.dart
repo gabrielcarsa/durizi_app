@@ -4,11 +4,9 @@ import 'package:durizi_app/pages/contratoScreen.dart';
 import 'package:durizi_app/pages/saqueScreen.dart';
 import 'package:durizi_app/pages/sobreScreen.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
 import '../providers/TipoTemaProvider.dart';
@@ -136,7 +134,7 @@ class _HomeState extends State<Home> {
                           children: [
                             TextSpan(
                               text: 'Olá, ',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             TextSpan(
                               text: clienteAtual.nome,
@@ -168,7 +166,7 @@ class _HomeState extends State<Home> {
                   ),
                   Text(
                     'Alterar para modo claro',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),
@@ -189,7 +187,7 @@ class _HomeState extends State<Home> {
                   ),
                   Text(
                     'Sair',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),
@@ -267,7 +265,7 @@ class _HomeState extends State<Home> {
                 saldosMesesDiferentes.isEmpty
                     ? 'R\$ 0'
                     : formatadorMoeda.format(saldosMesesDiferentes.last.valor),
-                style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.displayLarge,
               ),
               Padding(
                 padding:
@@ -343,7 +341,7 @@ class _HomeState extends State<Home> {
               ),
               Text(
                 'Ações',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(
                 height: 5.0,
@@ -509,7 +507,7 @@ class _HomeState extends State<Home> {
               ),
               Text(
                 'Recados',
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(
                 height: 5.0,
@@ -550,7 +548,7 @@ class _HomeState extends State<Home> {
                                           r.recado,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       );
                                     },

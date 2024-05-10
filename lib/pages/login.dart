@@ -115,14 +115,14 @@ class _LoginState extends State<Login> {
                   MediaQuery.of(context).viewInsets.bottom == 0
                       ? RichText(
                           text: TextSpan(
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.displayLarge,
                             children: <TextSpan>[
                               const TextSpan(
                                 text: 'Invista hoje, construa\n',
                               ),
                               TextSpan(
                                 text: 'seu amanhã',
-                                style: Theme.of(context).textTheme.headline2,
+                                style: Theme.of(context).textTheme.displayMedium,
                               ),
                             ],
                           ),
@@ -158,7 +158,7 @@ class _LoginState extends State<Login> {
                           ),
                           child: Text(
                             'Fazer simulação',
-                            style: Theme.of(context).textTheme.button,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         )
                       : const SizedBox(),
@@ -243,7 +243,7 @@ class _LoginState extends State<Login> {
                                 )
                               : Text(
                                   'Entrar',
-                                  style: Theme.of(context).textTheme.button,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                         ),
                       ),

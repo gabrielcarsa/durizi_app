@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../models/Cliente.dart';
 
 class LineChartSample2 extends StatefulWidget {
@@ -57,7 +56,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
     String formattedValue = (value * 1000).toInt().toString(); // Converte para milhares e transforma em string
     if (formattedValue.length > 3) {
       // Se o valor tiver mais de três dígitos, adicione "mil" após os primeiros dígitos
-      formattedValue = formattedValue.substring(0, formattedValue.length - 3) + "mil";
+      formattedValue = "${formattedValue.substring(0, formattedValue.length - 3)}mil";
     }
     return Text(
       formattedValue,

@@ -41,7 +41,7 @@ class _ContratoScreenState extends State<ContratoScreen> {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: Text(
                   'Contrato',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
               body: SizedBox(

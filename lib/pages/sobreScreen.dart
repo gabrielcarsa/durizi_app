@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/ClienteProvider.dart';
@@ -35,7 +33,7 @@ class _SobreScreenState extends State<SobreScreen> {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: Text(
                   'Sobre',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
               body: SizedBox(
@@ -102,7 +100,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                 Text(
                                   'DURIZI INVESTIMENTOS',
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style: Theme.of(context).textTheme.displaySmall,
                                 ),
                                 const SizedBox(
                                   height: 10.0,
@@ -128,7 +126,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       ),
                                     ],
@@ -155,7 +153,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       ),
                                     ],
@@ -182,7 +180,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       ),
                                     ],
@@ -209,7 +207,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       ),
                                     ],
@@ -236,7 +234,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       ),
                                     ],
@@ -263,7 +261,7 @@ class _SobreScreenState extends State<SobreScreen> {
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText2,
+                                              .bodyMedium,
                                         ),
                                       ),
                                     ],

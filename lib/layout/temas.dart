@@ -7,25 +7,30 @@ final lightTheme = ThemeData(
   dividerColor: Colors.black26,
   indicatorColor: const Color(0xFF000000),
   textTheme: const TextTheme(
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontSize: 36.0,
       fontWeight: FontWeight.w700,
       color: Color(0xFF000000),
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontSize: 36.0,
       fontWeight: FontWeight.w700,
-      color: Color(0xFFF8FF1F),
+      color: Color(0xFF5964FB),
     ),
-    button: TextStyle(
+    displaySmall: TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.w700,
+      color: Color(0xFF000000),
+    ),
+    labelLarge: TextStyle(
       fontSize: 16.0,
       color: Color(0xFFFFFFFF),
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontSize: 16.0,
       color: Color(0xFF000000),
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.w400,
       color: Color(0xFF575757),
@@ -40,30 +45,30 @@ final darkTheme = ThemeData(
   indicatorColor: const Color(0xFFFFFFFF),
   dividerColor: const Color(0xFFA1A1A1),
   textTheme: const TextTheme(
-    headline1: TextStyle(
+    displayLarge: TextStyle(
       fontSize: 36.0,
       fontWeight: FontWeight.w700,
       color: Color(0xFFFFFFFF),
     ),
-    headline2: TextStyle(
+    displayMedium: TextStyle(
       fontSize: 36.0,
       fontWeight: FontWeight.w700,
       color: Color(0xFF5964FB),
     ),
-    headline3: TextStyle(
+    displaySmall: TextStyle(
       fontSize: 20.0,
       fontWeight: FontWeight.w700,
       color: Color(0xFFFFFFFF),
     ),
-    button: TextStyle(
+    labelLarge: TextStyle(
       fontSize: 16.0,
       color: Color(0xFFFFFFFF),
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontSize: 16.0,
       color: Color(0xFFFFFFFF),
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.w400,
       color: Color(0xFFB7B7B7),

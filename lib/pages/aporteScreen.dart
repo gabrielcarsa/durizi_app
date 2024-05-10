@@ -42,7 +42,7 @@ class _AporteScreenState extends State<AporteScreen> {
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 title: Text(
                   'Aportes',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
               body: SizedBox(
@@ -120,7 +120,7 @@ class _AporteScreenState extends State<AporteScreen> {
                                 ),
                                 child: Text(
                                   'Solicitar Aporte',
-                                  style: Theme.of(context).textTheme.button,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                               ),
                             ),
@@ -144,7 +144,7 @@ class _AporteScreenState extends State<AporteScreen> {
                             Text(
                               'Histórico',
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             const SizedBox(
                               height: 15.0,
@@ -191,12 +191,12 @@ class _AporteScreenState extends State<AporteScreen> {
             ListTile(
               leading: Text(
                 aporte.data,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               title: Text(
                 formatadorMoeda.format(aporte.valor),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: Text(
                 aporte.isAprovado == true

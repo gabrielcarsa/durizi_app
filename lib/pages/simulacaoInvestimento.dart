@@ -36,7 +36,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
           'Simular Investimento',
-          style: Theme.of(context).textTheme.headline3,
+          style: Theme.of(context).textTheme.displaySmall,
         ),
       ),
       body: !_telaResultado ? buildFormScreen() : buildResultScreen(),
@@ -112,7 +112,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                 ),
                 child: Text(
                   'Simular Investimento',
-                  style: Theme.of(context).textTheme.button,
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
             ),
@@ -126,7 +126,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                     child: Text(
                       '*A simulação não leva em consideração aportes regulares. Para saber mais fale conosco.',
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ],
@@ -198,7 +198,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'Período',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ),
                           Expanded(
@@ -206,7 +206,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'Redimento',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ),
                         ],
@@ -221,7 +221,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 1 mês',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -229,7 +229,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor1Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -241,7 +241,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 3 meses',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -249,7 +249,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor3Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -261,7 +261,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 6 meses',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -269,7 +269,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor6Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -281,7 +281,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 9 meses',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -289,7 +289,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor9Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -301,7 +301,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 1 ano',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -309,7 +309,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor12Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -321,7 +321,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 2 anos',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -329,7 +329,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor24Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -341,7 +341,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               'em 4 anos',
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                           Expanded(
@@ -349,7 +349,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                             child: Text(
                               formatadorMoeda.format(valor48Meses),
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
