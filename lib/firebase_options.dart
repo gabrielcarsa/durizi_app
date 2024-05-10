@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -67,4 +61,26 @@ class DefaultFirebaseOptions {
     storageBucket: 'durizi-investimentos.appspot.com',
     iosBundleId: 'com.ghctecnologia.duriziApp',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBufNiazzMeQtQGVSiaWwzoFqL4EeqQPNU',
+    appId: '1:166073500937:web:7320f4e368b4093b763fd8',
+    messagingSenderId: '166073500937',
+    projectId: 'durizi-investimentos',
+    authDomain: 'durizi-investimentos.firebaseapp.com',
+    databaseURL: 'https://durizi-investimentos-default-rtdb.firebaseio.com',
+    storageBucket: 'durizi-investimentos.appspot.com',
+    measurementId: 'G-WJCW77DGP4',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyD854bCYecYly_b99pQGEVenrtZ1yBSRx8',
+    appId: '1:166073500937:ios:033edaf2a8c86915763fd8',
+    messagingSenderId: '166073500937',
+    projectId: 'durizi-investimentos',
+    databaseURL: 'https://durizi-investimentos-default-rtdb.firebaseio.com',
+    storageBucket: 'durizi-investimentos.appspot.com',
+    iosBundleId: 'com.ghctecnologia.duriziApp',
+  );
+
 }

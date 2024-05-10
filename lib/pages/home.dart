@@ -104,7 +104,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       endDrawer: Drawer(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
         elevation: 2,
         child: ListView(
           padding: EdgeInsets.zero,
@@ -361,7 +361,7 @@ class _HomeState extends State<Home> {
                         Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -399,7 +399,7 @@ class _HomeState extends State<Home> {
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -439,7 +439,7 @@ class _HomeState extends State<Home> {
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -477,7 +477,7 @@ class _HomeState extends State<Home> {
                         child: Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: Theme.of(context).secondaryHeaderColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -512,6 +512,12 @@ class _HomeState extends State<Home> {
               ),
               Consumer<RecadoProvider>(
                 builder: (context, recadoProvider, _) {
+                  int qtdRecados = 0;
+                  for (var element in recadoProvider.recados) {
+                    if(element.isAtivo){
+                      qtdRecados++;
+                    }
+                  }
                   return recadoProvider.isLoading
                       ? Center(
                           child: CircularProgressIndicator(
@@ -522,39 +528,44 @@ class _HomeState extends State<Home> {
                           height: 80,
                           child: PageView.builder(
                             controller: _pageController,
-                            itemCount: recadoProvider.recados.length,
+                            itemCount: qtdRecados,
                             itemBuilder: (context, index) {
                               return CarouselSlider(
                                 items: recadosProvider.recados.map((r) {
                                   return Builder(
                                     builder: (BuildContext context) {
-                                      return Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        padding: const EdgeInsets.all(12.0),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Theme.of(context)
-                                                  .dividerColor),
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: Text(
-                                          r.recado,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ),
-                                      );
+                                      if (r.isAtivo == true) {
+                                        return Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
+                                          padding: const EdgeInsets.all(12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .dividerColor),
+                                            color: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            r.recado,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium,
+                                          ),
+                                        );
+                                      } else{
+                                        return const SizedBox();
+                                      }
                                     },
                                   );
                                 }).toList(),
                                 options: CarouselOptions(
                                   viewportFraction: 0.6,
-                                  autoPlay: true,
+                                  autoPlay: qtdRecados > 1 ? true : false,
                                   autoPlayInterval: const Duration(seconds: 5),
                                   autoPlayAnimationDuration:
                                       const Duration(milliseconds: 2500),
@@ -567,6 +578,21 @@ class _HomeState extends State<Home> {
                         );
                 },
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30.0),
+                child: Container(
+                  height: 215,
+                  width: MediaQuery.of(context).size.width * 1,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: const DecorationImage(
+                      image: AssetImage("assets/images/em-breve-app.png"),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

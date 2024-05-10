@@ -135,7 +135,7 @@ class _SaqueScreenState extends State<SaqueScreen> {
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).secondaryHeaderColor,
                         ),
                         child: ListView(
                           children: [

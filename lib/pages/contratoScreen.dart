@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
+import '../providers/TipoTemaProvider.dart';
 import 'home.dart';
+//import 'dart:html' as html;
 
 class ContratoScreen extends StatefulWidget {
   const ContratoScreen({super.key, required this.cliente});
@@ -26,6 +28,8 @@ class _ContratoScreenState extends State<ContratoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
+
     return SafeArea(
       child: Consumer<ClientesProvider>(
         builder: (context, clienteProvider, _) {
@@ -47,45 +51,77 @@ class _ContratoScreenState extends State<ContratoScreen> {
               body: SizedBox(
                 width: MediaQuery.of(context).size.width * 1,
                 height: MediaQuery.of(context).size.height * 1,
-                child: FutureBuilder<String?>(
-                  future: _pdfUrlFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Erro: ${snapshot.error}'),
-                      );
-                    } else if (snapshot.hasData && snapshot.data != null) {
-                      // PDF disponível
-                      return _isLoadingPDF
-                          ? const CircularProgressIndicator()
-                          : Center(
-                              child: ElevatedButton(
-                                onPressed: () async {
-
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                    const Color(0xFF5964FB),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Text(
+                        'Tenha acesso ao seu contrato,\nbaixe agora:',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.w700,
+                          color: themeProvider.obterTema().brightness == Brightness.dark
+                              ? const Color(0xFFFFFFFF)
+                              : const Color(0xFF000000),
+                        ),
+                      ),
+                    ),
+                    FutureBuilder<String?>(
+                      future: _pdfUrlFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Erro: ${snapshot.error}'),
+                          );
+                        } else if (snapshot.hasData && snapshot.data != null) {
+                          // PDF disponível
+                          return _isLoadingPDF
+                              ? const CircularProgressIndicator()
+                              : Center(
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.7,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        /*html.AnchorElement(href: snapshot.data!)
+                                          ..setAttribute(
+                                              'download', '${widget.cliente.nome}.pdf')..setAttribute('target', '_blank')
+                                          ..click();*/
+                                      },
+                                      style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                          const EdgeInsets.symmetric(vertical: 5),
+                                        ),
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                        ),
+                                        backgroundColor: MaterialStateProperty.all(
+                                            Theme.of(context).primaryColor),
+                                      ),
+                                      child: Text(
+                                        'Baixar PDF',
+                                        style: Theme.of(context).textTheme.labelLarge,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 20.0),
-                                  child: Text('Baixar o contrato'),
-                                ),
-                              ),
-                            );
-                    } else {
-                      // PDF não disponível
-                      return const Center(
-                        child: Text('Não disponível'),
-                      );
-                    }
-                  },
+                                );
+                        } else {
+                          // PDF não disponível
+                          return const Center(
+                            child: Text('Não disponível'),
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
             );

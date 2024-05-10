@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
   primaryColor: const Color(0xFF5964FB),
-  backgroundColor: const Color(0xFFEDEDED),
+  secondaryHeaderColor: const Color(0xFFEDEDED),
   scaffoldBackgroundColor: const Color(0xFFFFFFFF),
   dividerColor: Colors.black26,
   indicatorColor: const Color(0xFF000000),
@@ -40,7 +40,7 @@ final lightTheme = ThemeData(
 
 final darkTheme = ThemeData(
   primaryColor: const Color(0xFF5964FB),
-  backgroundColor: const Color(0xFF212121),
+  secondaryHeaderColor: const Color(0xFF212121),
   scaffoldBackgroundColor: const Color(0xFF131314),
   indicatorColor: const Color(0xFFFFFFFF),
   dividerColor: const Color(0xFFA1A1A1),
