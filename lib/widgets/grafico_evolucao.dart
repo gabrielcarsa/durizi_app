@@ -133,7 +133,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 10,
+            //interval: 10,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 30,
           ),
@@ -146,7 +146,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
       minX: 0,
       maxX: widget.listaDeSaldos.length.toDouble() - 1, // Atualiza o valor máximo do eixo x
       minY: minSaldo / 1000,
-      maxY: (maxSaldo / 1000) + 10, // Pode ser ajustado conforme necessário
+      maxY: maxSaldo / 1000, // Pode ser ajustado conforme necessário
       lineBarsData: [
         LineChartBarData(
           spots: spots,
