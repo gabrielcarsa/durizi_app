@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/ClienteProvider.dart';
+import '../providers/TipoTemaProvider.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -82,6 +83,8 @@ class _LoginState extends State<Login> {
 
   //Tela não logado
   Scaffold buildLoginScreen() {
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
+
     return Scaffold(
       body: SizedBox(
         height: MediaQuery.of(context).size.height * 1,
@@ -98,6 +101,7 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  themeProvider.obterTema().brightness == Brightness.dark ?
                   Container(
                     height: 150.0,
                     width: 150.0,
@@ -105,6 +109,16 @@ class _LoginState extends State<Login> {
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/logo-em-branco.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ) : Container(
+                    height: 150.0,
+                    width: 150.0,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/images/logo_light.png"),
                         fit: BoxFit.fill,
                       ),
                     ),

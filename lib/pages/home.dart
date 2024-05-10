@@ -216,33 +216,31 @@ class _HomeState extends State<Home> {
         iconTheme: IconThemeData(
           color: Theme.of(context).indicatorColor,
         ),
-        toolbarHeight: 100,
+        toolbarHeight: 80,
         elevation: 0,
         title: themeProvider.obterTema().brightness == Brightness.dark
             ? Container(
-          height: 100.0,
-          width: 100.0,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                  "assets/images/logo-em-branco.png"),
-              fit: BoxFit.fill,
-            ),
-          ),
-        )
+                height: 100.0,
+                width: 100.0,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/logo-em-branco.png"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              )
             : Container(
-          height: 100.0,
-          width: 100.0,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image:
-              AssetImage("assets/images/logo_light.png"),
-              fit: BoxFit.fill,
-            ),
-          ),
-        ),
+                height: 100.0,
+                width: 100.0,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/logo_light.png"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: SingleChildScrollView(

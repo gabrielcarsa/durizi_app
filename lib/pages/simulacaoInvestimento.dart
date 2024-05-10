@@ -3,6 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/TipoTemaProvider.dart';
 
 class SimulacaoInvestimento extends StatefulWidget {
   const SimulacaoInvestimento({super.key});
@@ -45,6 +48,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
 
   // Tela de formulário
   Widget buildFormScreen() {
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 1,
       child: Form(
@@ -54,13 +58,15 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: const Text(
+              child: Text(
                 'Vamos dar os primeiros passos, quanto você deseja investir inicialmente?',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26.0,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFFFFFFFF),
+                  color: themeProvider.obterTema().brightness == Brightness.dark
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFF000000),
                 ),
               ),
             ),
@@ -150,6 +156,8 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
     double valor24Meses = (valorInicial * pow(1 + 0.05, 24)) - valorInicial;
     double valor48Meses = (valorInicial * pow(1 + 0.05, 48)) - valorInicial;
 
+    final themeProvider = Provider.of<TipoTemaProvider>(context);
+
     return SizedBox(
       width: MediaQuery.of(context).size.width * 1,
       child: Column(
@@ -160,10 +168,12 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
             child: Text(
               'Investindo ${formatadorMoeda.format(double.parse(_valorController.text))}\n você obterá:',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 26.0,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFFFFFFFF),
+                color: themeProvider.obterTema().brightness == Brightness.dark
+                    ? const Color(0xFFFFFFFF)
+                    : const Color(0xFF000000),
               ),
             ),
           ),
@@ -186,7 +196,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(
                       width: 1.5,
-                      color: Colors.white.withOpacity(0.2),
+                      color: Theme.of(context).indicatorColor.withOpacity(0.2),
                     ),
                   ),
                   child: Column(
@@ -388,7 +398,9 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                 'Simular outro valor',
                 style: TextStyle(
                   fontSize: 16.0,
-                  color: Theme.of(context).primaryColor,
+                  color: themeProvider.obterTema().brightness == Brightness.dark
+                      ? const Color(0xFF5964FB)
+                      : const Color(0xFFFFFFFF),
                 ),
               ),
             ),
