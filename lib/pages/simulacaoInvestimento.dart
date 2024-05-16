@@ -153,8 +153,8 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
     double valor6Meses = (valorInicial * pow(1 + 0.05, 6)) - valorInicial;
     double valor9Meses = (valorInicial * pow(1 + 0.05, 9)) - valorInicial;
     double valor12Meses = (valorInicial * pow(1 + 0.05, 12)) - valorInicial;
+    double valor18Meses = (valorInicial * pow(1 + 0.05, 18)) - valorInicial;
     double valor24Meses = (valorInicial * pow(1 + 0.05, 24)) - valorInicial;
-    double valor48Meses = (valorInicial * pow(1 + 0.05, 48)) - valorInicial;
 
     final themeProvider = Provider.of<TipoTemaProvider>(context);
 
@@ -329,7 +329,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              'em 2 anos',
+                              'em 1 e 6 meses',
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
@@ -337,7 +337,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              formatadorMoeda.format(valor24Meses),
+                              formatadorMoeda.format(valor18Meses),
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
@@ -349,7 +349,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 2,
                             child: Text(
-                              'em 4 anos',
+                              'em 2 anos',
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
@@ -357,7 +357,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              formatadorMoeda.format(valor48Meses),
+                              formatadorMoeda.format(valor24Meses),
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
