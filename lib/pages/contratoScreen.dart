@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
 import '../providers/TipoTemaProvider.dart';
 import 'home.dart';
-//import 'dart:html' as html;
 
 class ContratoScreen extends StatefulWidget {
   const ContratoScreen({super.key, required this.cliente});
@@ -62,7 +62,8 @@ class _ContratoScreenState extends State<ContratoScreen> {
                         style: TextStyle(
                           fontSize: 26.0,
                           fontWeight: FontWeight.w700,
-                          color: themeProvider.obterTema().brightness == Brightness.dark
+                          color: themeProvider.obterTema().brightness ==
+                                  Brightness.dark
                               ? const Color(0xFFFFFFFF)
                               : const Color(0xFF000000),
                         ),
@@ -71,7 +72,8 @@ class _ContratoScreenState extends State<ContratoScreen> {
                     FutureBuilder<String?>(
                       future: _pdfUrlFuture,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -85,30 +87,42 @@ class _ContratoScreenState extends State<ContratoScreen> {
                               ? const CircularProgressIndicator()
                               : Center(
                                   child: SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.7,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        /*html.AnchorElement(href: snapshot.data!)
-                                          ..setAttribute(
-                                              'download', '${widget.cliente.nome}.pdf')..setAttribute('target', '_blank')
-                                          ..click();*/
+                                      onPressed: () async {
+                                        String? pdfUrl = snapshot.data;
+                                        await launchUrl(Uri.parse(pdfUrl!));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            duration: Duration(seconds: 5),
+                                            content: Text(
+                                                'Você será encaminhado para o seu navegador para download do contrato. Caso não funcione tente mais tarde.'),
+                                          ),
+                                        );
                                       },
                                       style: ButtonStyle(
                                         padding: MaterialStateProperty.all(
-                                          const EdgeInsets.symmetric(vertical: 5),
+                                          const EdgeInsets.symmetric(
+                                              vertical: 5),
                                         ),
                                         shape: MaterialStateProperty.all<
                                             RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
                                         ),
-                                        backgroundColor: MaterialStateProperty.all(
-                                            Theme.of(context).primaryColor),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Theme.of(context).primaryColor),
                                       ),
                                       child: Text(
                                         'Baixar PDF',
-                                        style: Theme.of(context).textTheme.labelLarge,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
                                       ),
                                     ),
                                   ),
