@@ -1,5 +1,6 @@
 import 'package:durizi_app/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,8 @@ class _AporteScreenState extends State<AporteScreen> {
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   //controller
-  final TextEditingController _valorController = TextEditingController();
+  final TextEditingController _valorController =
+      MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
 
   //form
   final _formKey = GlobalKey<FormState>();
@@ -93,8 +95,11 @@ class _AporteScreenState extends State<AporteScreen> {
                                         formatter.format(agora);
 
                                     final aporteSalvar = Aporte(
-                                      valor:
-                                          double.parse(_valorController.text),
+                                      valor: double.parse(
+                                        _valorController.text
+                                            .replaceAll('.', '')
+                                            .replaceAll(',', '.'),
+                                      ),
                                       data: dataFormatada,
                                       clienteId:
                                           clienteProvider.clienteAtual!.id!,
