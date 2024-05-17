@@ -59,12 +59,13 @@ class _HomeState extends State<Home> {
       // Verificar se o mês não está na lista de meses encontrados
       if (!mesesEncontrados.contains(mesAtualSaldo)) {
         // Adicionar o mês à lista de meses encontrados
-        mesesEncontrados.add(mesAtualSaldo);
 
         //Verificar se não é o mes Atual
         if (mesAnoAtualSaldo != mesAnoAtual) {
           // Adicionar o saldo à lista de saldos de meses diferentes
           saldosMesesDiferentes.add(saldo);
+          mesesEncontrados.add(mesAtualSaldo);
+
         } else {
           saldosMesAtual.add(saldo);
         }
