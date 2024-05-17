@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:durizi_app/pages/home.dart';
 import 'package:durizi_app/pages/simulacaoInvestimento.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/ClienteProvider.dart';
@@ -21,7 +22,8 @@ class _LoginState extends State<Login> {
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   //controller dos campos do form
-  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _cpfController =
+      MaskedTextController(mask: '000.000.000-00');
 
   //form
   final _formKey = GlobalKey<FormState>();
@@ -39,7 +41,10 @@ class _LoginState extends State<Login> {
 
     if (_cpfController.text.isNotEmpty) {
       try {
-        clienteProvider.consultarCPFExistente(_cpfController.text).then((e) {
+        String cpfFormatado =
+            _cpfController.text.replaceAll('.', '').replaceAll('-', '');
+
+        clienteProvider.consultarCPFExistente(cpfFormatado).then((e) {
           setState(() {
             if (e == null) {
               msgError = 'Cliente não encontrado!';
@@ -101,28 +106,30 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  themeProvider.obterTema().brightness == Brightness.dark ?
-                  Container(
-                    height: 150.0,
-                    width: 150.0,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/logo-em-branco.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ) : Container(
-                    height: 150.0,
-                    width: 150.0,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/logo_light.png"),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
+                  themeProvider.obterTema().brightness == Brightness.dark
+                      ? Container(
+                          height: 150.0,
+                          width: 150.0,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/logo-em-branco.png"),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: 150.0,
+                          width: 150.0,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/logo_light.png"),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -136,7 +143,8 @@ class _LoginState extends State<Login> {
                               ),
                               TextSpan(
                                 text: 'seu amanhã',
-                                style: Theme.of(context).textTheme.displayMedium,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
                               ),
                             ],
                           ),
@@ -152,7 +160,8 @@ class _LoginState extends State<Login> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SimulacaoInvestimento(),
+                                builder: (context) =>
+                                    const SimulacaoInvestimento(),
                               ),
                             );
                           },

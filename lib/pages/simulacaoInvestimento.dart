@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,8 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   //controller
-  final TextEditingController _valorController = TextEditingController();
+  final TextEditingController _valorController =
+      MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
 
   //form
   final _formKey = GlobalKey<FormState>();
@@ -146,8 +148,10 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
 
   //Tela de resultados
   Widget buildResultScreen() {
+    String valorFormatado =
+        _valorController.text.replaceAll('.', '').replaceAll(',', '.');
     //valores da simulação
-    double valorInicial = double.parse(_valorController.text);
+    double valorInicial = double.parse(valorFormatado);
     double valor1Meses = (valorInicial * 0.05);
     double valor3Meses = (valorInicial * pow(1 + 0.05, 3)) - valorInicial;
     double valor6Meses = (valorInicial * pow(1 + 0.05, 6)) - valorInicial;
@@ -166,7 +170,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Text(
-              'Investindo ${formatadorMoeda.format(double.parse(_valorController.text))}\n você obterá:',
+              'Investindo ${formatadorMoeda.format(double.parse(valorFormatado))}\n você obterá:',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 26.0,
