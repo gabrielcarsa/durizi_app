@@ -59,6 +59,7 @@ class _AporteScreenState extends State<AporteScreen> {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.7,
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 controller: _valorController,
                                 style: const TextStyle(color: Colors.black),
                                 decoration: const InputDecoration(
