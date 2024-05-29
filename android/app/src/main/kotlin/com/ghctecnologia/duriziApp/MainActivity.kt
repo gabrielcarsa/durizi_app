@@ -1,4 +1,4 @@
-package com.ghctecnologia.durizi_app
+package com.ghctecnologia.duriziApp
 
 import io.flutter.embedding.android.FlutterActivity
 
