@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
     projectId: 'durizi-investimentos',
     databaseURL: 'https://durizi-investimentos-default-rtdb.firebaseio.com',
     storageBucket: 'durizi-investimentos.appspot.com',
-    iosBundleId: 'com.ghctecnologia.duriziApp',
+    iosBundleId: 'duriziapp',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
@@ -80,7 +80,7 @@ class DefaultFirebaseOptions {
     projectId: 'durizi-investimentos',
     databaseURL: 'https://durizi-investimentos-default-rtdb.firebaseio.com',
     storageBucket: 'durizi-investimentos.appspot.com',
-    iosBundleId: 'com.ghctecnologia.duriziApp',
+    iosBundleId: 'duriziapp',
   );
 
 }
