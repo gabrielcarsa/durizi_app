@@ -65,7 +65,6 @@ class _HomeState extends State<Home> {
           // Adicionar o saldo à lista de saldos de meses diferentes
           saldosMesesDiferentes.add(saldo);
           mesesEncontrados.add(mesAtualSaldo);
-
         } else {
           saldosMesAtual.add(saldo);
         }
@@ -84,7 +83,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //Providers
     final themeProvider = Provider.of<TipoTemaProvider>(context);
-    final recadosProvider = Provider.of<RecadoProvider>(context);
     final clienteProvider =
         Provider.of<ClientesProvider>(context, listen: false);
 
@@ -166,7 +164,9 @@ class _HomeState extends State<Home> {
                     width: 8.0,
                   ),
                   Text(
-                    'Alterar para modo claro',
+                    themeProvider.obterTema().brightness == Brightness.dark
+                        ? 'Alterar para modo claro'
+                        : 'Alterar para modo escuro',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
@@ -264,7 +264,11 @@ class _HomeState extends State<Home> {
                 saldosMesesDiferentes.isEmpty
                     ? 'R\$ 0'
                     : formatadorMoeda.format(saldosMesesDiferentes.last.valor),
-                style: Theme.of(context).textTheme.displayLarge,
+                style: const TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFFFFFFFF),
+                ),
               ),
               Padding(
                 padding:
@@ -273,67 +277,74 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
+                    Flexible(
+                      flex: MediaQuery.of(context).size.width < 576 ? 2 : 3,
                       child: LineChartSample2(
                           listaDeSaldos: saldosMesesDiferentes),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '+ ${formatadorMoeda.format(diferenca)}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w700,
+                    Flexible(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '+ ${formatadorMoeda.format(diferenca)}',
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width < 576
+                                  ? 14
+                                  : 16,
+                              color: Colors.green,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'de ganhos',
-                          style: themeProvider.obterTema().brightness ==
-                                  Brightness.dark
-                              ? const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xFF9F9F9F),
-                                  fontWeight: FontWeight.w400,
-                                )
-                              : const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xFF333333),
-                                  fontWeight: FontWeight.w400,
-                                ),
-                        ),
-                        const SizedBox(
-                          height: 8.0,
-                        ),
-                        Text(
-                          '+ $evolucaoSaldo %',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w700,
+                          Text(
+                            'de ganhos',
+                            style: themeProvider.obterTema().brightness ==
+                                    Brightness.dark
+                                ? const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xFF9F9F9F),
+                                    fontWeight: FontWeight.w400,
+                                  )
+                                : const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xFF333333),
+                                    fontWeight: FontWeight.w400,
+                                  ),
                           ),
-                        ),
-                        Text(
-                          'de evolução',
-                          style: themeProvider.obterTema().brightness ==
-                                  Brightness.dark
-                              ? const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xFF9F9F9F),
-                                  fontWeight: FontWeight.w400,
-                                )
-                              : const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xFF333333),
-                                  fontWeight: FontWeight.w400,
-                                ),
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 8.0,
+                          ),
+                          Text(
+                            '+ $evolucaoSaldo %',
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width < 576
+                                  ? 14
+                                  : 16,
+                              color: Colors.green,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Text(
+                            'de evolução',
+                            style: themeProvider.obterTema().brightness ==
+                                    Brightness.dark
+                                ? const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xFF9F9F9F),
+                                    fontWeight: FontWeight.w400,
+                                  )
+                                : const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xFF333333),
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -513,12 +524,10 @@ class _HomeState extends State<Home> {
               ),
               Consumer<RecadoProvider>(
                 builder: (context, recadoProvider, _) {
-                  int qtdRecados = 0;
-                  for (var element in recadoProvider.recados) {
-                    if(element.isAtivo){
-                      qtdRecados++;
-                    }
-                  }
+                  // Filtrando apenas os recados ativos
+                  final activeRecados = recadoProvider.recados
+                      .where((r) => r.isAtivo == true)
+                      .toList();
                   return recadoProvider.isLoading
                       ? Center(
                           child: CircularProgressIndicator(
@@ -529,48 +538,42 @@ class _HomeState extends State<Home> {
                           height: 80,
                           child: PageView.builder(
                             controller: _pageController,
-                            itemCount: qtdRecados,
+                            itemCount: activeRecados.length,
                             itemBuilder: (context, index) {
                               return CarouselSlider(
-                                items: recadosProvider.recados.map((r) {
+                                items: activeRecados.map((r) {
                                   return Builder(
-                                    builder: (BuildContext context) {
-                                      if (r.isAtivo == true) {
-                                        return Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
-                                          padding: const EdgeInsets.all(12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .dividerColor),
-                                            color: Theme.of(context)
-                                                .scaffoldBackgroundColor,
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            r.recado,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
-                                          ),
-                                        );
-                                      } else{
-                                        return const SizedBox();
-                                      }
-                                    },
-                                  );
+                                      builder: (BuildContext context) {
+                                    return Container(
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.8,
+                                      padding: const EdgeInsets.all(12.0),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).dividerColor),
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Text(
+                                        r.recado,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                    );
+                                  });
                                 }).toList(),
                                 options: CarouselOptions(
-                                  viewportFraction: 0.6,
-                                  autoPlay: qtdRecados > 1 ? true : false,
+                                  enableInfiniteScroll: false,
+                                  viewportFraction: 0.8,
+                                  autoPlay: /*qtdRecados > 1 ? true : */ false,
                                   autoPlayInterval: const Duration(seconds: 5),
                                   autoPlayAnimationDuration:
                                       const Duration(milliseconds: 2500),
-                                  enlargeCenterPage: false,
+                                  enlargeCenterPage: true,
                                 ),
                               );
                             },
@@ -579,21 +582,15 @@ class _HomeState extends State<Home> {
                         );
                 },
               ),
+              /*
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30.0),
                 child: Container(
                   height: 215,
                   width: MediaQuery.of(context).size.width * 1,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/em-breve-app.png"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
                 ),
-              )
+              ),*/
             ],
           ),
         ),

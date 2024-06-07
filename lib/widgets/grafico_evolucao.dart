@@ -135,7 +135,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
             showTitles: true,
             //interval: 10,
             getTitlesWidget: leftTitleWidgets,
-            reservedSize: 30,
+            reservedSize: 40,
           ),
         ),
       ),
