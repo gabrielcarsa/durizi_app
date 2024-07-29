@@ -45,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCe2BYYMT5o0Iaf17eJhVVlasrVBL1u37U',
-    appId: '1:166073500937:android:cf7113041d772b6b763fd8',
+    appId: '1:166073500937:android:86f76d004f06bea6763fd8',
     messagingSenderId: '166073500937',
     projectId: 'durizi-investimentos',
     databaseURL: 'https://durizi-investimentos-default-rtdb.firebaseio.com',
@@ -54,12 +54,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD854bCYecYly_b99pQGEVenrtZ1yBSRx8',
-    appId: '1:166073500937:ios:bc62587f836b2f9a763fd8',
+    appId: '1:166073500937:ios:0d779483f1d54a35763fd8',
     messagingSenderId: '166073500937',
     projectId: 'durizi-investimentos',
     databaseURL: 'https://durizi-investimentos-default-rtdb.firebaseio.com',
     storageBucket: 'durizi-investimentos.appspot.com',
-    iosBundleId: 'com.ghctecnologia.duriziapp',
+    iosBundleId: 'com.duriziinvestimentos.duriziinvestimentos',
   );
 
   static const FirebaseOptions web = FirebaseOptions(

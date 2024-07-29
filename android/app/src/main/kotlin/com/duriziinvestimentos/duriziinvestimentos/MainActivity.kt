@@ -1,4 +1,4 @@
-package com.ghctecnologia.duriziapp
+package com.duriziinvestimentos.duriziinvestimentos
 
 import io.flutter.embedding.android.FlutterActivity
 
