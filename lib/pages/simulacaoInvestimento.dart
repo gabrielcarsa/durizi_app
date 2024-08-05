@@ -152,13 +152,13 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
         _valorController.text.replaceAll('.', '').replaceAll(',', '.');
     //valores da simulação
     double valorInicial = double.parse(valorFormatado);
-    double valor1Meses = (valorInicial * 0.05);
-    double valor3Meses = (valorInicial * pow(1 + 0.05, 3)) - valorInicial;
-    double valor6Meses = (valorInicial * pow(1 + 0.05, 6)) - valorInicial;
-    double valor9Meses = (valorInicial * pow(1 + 0.05, 9)) - valorInicial;
-    double valor12Meses = (valorInicial * pow(1 + 0.05, 12)) - valorInicial;
-    double valor18Meses = (valorInicial * pow(1 + 0.05, 18)) - valorInicial;
-    double valor24Meses = (valorInicial * pow(1 + 0.05, 24)) - valorInicial;
+    double valor1Meses = (valorInicial * 0.03);
+    double valor3Meses = (valorInicial * pow(1 + 0.03, 3)) - valorInicial;
+    double valor6Meses = (valorInicial * pow(1 + 0.03, 6)) - valorInicial;
+    double valor9Meses = (valorInicial * pow(1 + 0.03, 9)) - valorInicial;
+    double valor12Meses = (valorInicial * pow(1 + 0.03, 12)) - valorInicial;
+    double valor18Meses = (valorInicial * pow(1 + 0.03, 18)) - valorInicial;
+    double valor24Meses = (valorInicial * pow(1 + 0.03, 24)) - valorInicial;
 
     final themeProvider = Provider.of<TipoTemaProvider>(context);
 
