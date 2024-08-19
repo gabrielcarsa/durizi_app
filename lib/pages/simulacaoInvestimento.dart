@@ -218,7 +218,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              'Redimento',
+                              'Rendimento',
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.displaySmall,
                             ),
