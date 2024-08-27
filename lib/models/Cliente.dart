@@ -5,7 +5,7 @@ class Cliente {
   final String dataNascimento;
   final String rg;
   final Endereco endereco;
-  final List<Saldo>? saldo;
+  List<Saldo>? saldo;
   double reajusteDiario;
 
   Cliente({
@@ -25,25 +25,29 @@ class Cliente {
         dataNascimento = json['data_nascimento'],
         nome = json['nome'],
         rg = json['rg'],
-        reajusteDiario = double.parse(json['reajusteDiario'].toString()),
+        reajusteDiario = json['reajusteDiario'],
         endereco = Endereco.fromJson(json['endereco']),
         saldo = json['saldo'] != null
-            ? (json['saldo'] as Map<String, dynamic>)
-            .values
-            .map((saldoJson) => Saldo.fromJson(saldoJson))
-            .toList()
+            ? (json['saldo'] is List
+                ? (json['saldo'] as List)
+                    .map((saldoJson) => Saldo.fromJson(saldoJson))
+                    .toList()
+                : (json['saldo'] as Map<String, dynamic>)
+                    .values
+                    .map((saldoJson) => Saldo.fromJson(saldoJson))
+                    .toList())
             : null;
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'cpf': cpf,
-    'data_nascimento': dataNascimento,
-    'nome': nome,
-    'rg': rg,
-    'reajusteDiario': reajusteDiario,
-    'endereco': endereco.toJson(),
-    'saldo': saldo?.map((saldo) => saldo.toJson()).toList(),
-  };
+        'id': id,
+        'cpf': cpf,
+        'data_nascimento': dataNascimento,
+        'nome': nome,
+        'rg': rg,
+        'reajusteDiario': reajusteDiario,
+        'endereco': endereco.toJson(),
+        'saldo': saldo?.map((saldo) => saldo.toJson()).toList(),
+      };
 
   //setters
   void setReajusteDiario(double value) {
@@ -80,14 +84,14 @@ class Endereco {
         rua = json['rua'];
 
   Map<String, dynamic> toJson() => {
-    'bairro': bairro,
-    'cep': cep,
-    'complemento': complemento,
-    'numero': numero,
-    'cidade': cidade,
-    'estado': estado,
-    'rua': rua,
-  };
+        'bairro': bairro,
+        'cep': cep,
+        'complemento': complemento,
+        'numero': numero,
+        'cidade': cidade,
+        'estado': estado,
+        'rua': rua,
+      };
 }
 
 class Saldo {
@@ -107,9 +111,7 @@ class Saldo {
   }
 
   Map<String, dynamic> toJson() => {
-    'data': data,
-    'valor': valor,
-  };
+        'data': data,
+        'valor': valor,
+      };
 }
-
-

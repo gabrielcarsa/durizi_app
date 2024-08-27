@@ -30,7 +30,6 @@ class ClientesProvider extends ChangeNotifier {
   Future<void> _loadClientes() async {
     _clientesRef.onValue.listen((event) {
       final data = jsonDecode(jsonEncode(event.snapshot.value)); //solução _InternalLinkedHashMap<Object>
-
       if (data != null && data is Map) {
         _clientes = data.entries
             .map((entry) => Cliente.fromJson(entry.value, entry.key))
