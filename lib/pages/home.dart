@@ -39,44 +39,42 @@ class _HomeState extends State<Home> {
 
     super.initState();
 
-    // Lista para armazenar os meses já encontrados
-    List<String> mesesEncontrados = [];
+    // Armazenar saldo atual
+    List<Saldo> saldoAtual = [];
+    // Variável para obter o mês e ano da data de hoje
+    DateTime agora = DateTime.now();
+    DateTime dozeMesesAtras = agora.subtract(Duration(days: 365));
 
-    // Armazenar saldo do Mes Atual para depois exibir o mais atual
-    List<Saldo> saldosMesAtual = [];
+    // Formato da data
+    DateFormat formatadorData = DateFormat('dd/MM/yyyy');
 
-    //Variavel para obter o mes e ano da data de hoje
-    String mesAnoAtual = DateFormat('MM/yyyy').format(DateTime.now());
+    // Map para armazenar o saldo mais recente de cada mês
+    Map<String, Saldo> saldosPorMes = {};
 
-    // Iterar sobre a lista de saldos do cliente
-    for (Saldo saldo in clienteProvider.clienteAtual?.saldo ?? []) {
-      // Obter o mês da data do saldo do for
-      String mesAtualSaldo = saldo.data.substring(3, 5);
+    if (clienteProvider.clienteAtual?.saldo != null) {
+      for (Saldo saldo in clienteProvider.clienteAtual!.saldo!) {
+        try {
+          DateTime dataSaldo = formatadorData.parse(saldo.data);
+          // Usar o ano e o mês como chave para o agrupamento
+          String chaveMesAno = DateFormat('MM/yyyy').format(dataSaldo);
 
-      // Obter o mẽs e ano da data do saldo do for
-      String mesAnoAtualSaldo = saldo.data.substring(3);
-
-      // Verificar se o mês não está na lista de meses encontrados
-      if (!mesesEncontrados.contains(mesAtualSaldo)) {
-        // Adicionar o mês à lista de meses encontrados
-
-        //Verificar se não é o mes Atual
-        if (mesAnoAtualSaldo != mesAnoAtual) {
-          // Adicionar o saldo à lista de saldos de meses diferentes
-          saldosMesesDiferentes.add(saldo);
-          mesesEncontrados.add(mesAtualSaldo);
-        } else {
-          saldosMesAtual.add(saldo);
+          // Adicionar ou atualizar o saldo mais recente para cada mês
+          if (dataSaldo.isAfter(dozeMesesAtras)) {
+            if (!saldosPorMes.containsKey(chaveMesAno) ||
+                dataSaldo.isAfter(
+                    formatadorData.parse(saldosPorMes[chaveMesAno]!.data))) {
+              saldosPorMes[chaveMesAno] = saldo;
+            }
+          }
+        } catch (e) {
+          print('Erro ao analisar a data: $e');
         }
       }
+
+      // Converter o mapa em uma lista e ordenar por data (ordem crescente)
+      saldosMesesDiferentes = saldosPorMes.values.toList()
+        ..sort((a, b) => formatadorData.parse(a.data).compareTo(formatadorData.parse(b.data)));
     }
-    if (saldosMesAtual.isNotEmpty) {
-      saldosMesesDiferentes.add(saldosMesAtual.last);
-    }
-    // Atualizar o estado com a lista de saldos de meses diferentes
-    setState(() {
-      saldosMesesDiferentes = saldosMesesDiferentes;
-    });
   }
 
   @override
