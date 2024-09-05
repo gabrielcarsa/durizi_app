@@ -11,26 +11,42 @@ class StockProvider with ChangeNotifier {
   List<Stock> get stocks => _stocks;
   String? get errorMessage => _errorMessage;
 
-  Future<Stock?> getStock(String symbol) async {
+  Future<Stock?> getStock() async {
     isLoading = true;
     notifyListeners();
 
-    try {
-      final response = await http
-          .get(Uri.parse('https://brapi.dev/api/quote/petr4?token=sDitMJtjH647iZ3CphyA1A'));
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        _errorMessage = null;
+    List<String> symbols = [
+      'petr4',
+      'bbas3',
+      'itub4',
+    ];
 
-        // Supondo que 'results' é a chave que contém a lista de ações
-        if (data['results'] != null && data['results'] is List) {
-          _stocks = (data['results'] as List).map((item) => Stock.fromJson(item)).toList();
+    try {
+      // Cria uma lista de Futures para as requisições HTTP
+      final futures = symbols.map((symbol) {
+        final url = 'https://brapi.dev/api/quote/$symbol?token=sDitMJtjH647iZ3CphyA1A';
+        return http.get(Uri.parse(url));
+      }).toList();
+
+      // Aguarda a conclusão de todas as requisições
+      final responses = await Future.wait(futures);
+
+      _stocks = [];
+      _errorMessage = null;
+
+      for (final response in responses) {
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> data = json.decode(response.body);
+          // Verifique se 'results' está presente e é uma lista
+          if (data['results'] != null && data['results'] is List) {
+            final stockList = (data['results'] as List).map((item) => Stock.fromJson(item)).toList();
+            _stocks.addAll(stockList);
+          } else {
+            _errorMessage = 'Dados não encontrados';
+          }
         } else {
-          _errorMessage = 'Dados não encontrados';
-          _stocks = [];
+          _errorMessage = 'Erro ao carregar dados';
         }
-      } else {
-        _errorMessage = 'Erro ao carregar dados';
       }
     } catch (e) {
       _errorMessage = 'Erro: $e';

@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
       evolucaoSaldo = double.parse(evolucaoSaldo.toStringAsFixed(2));
     }
     Provider.of<StockProvider>(context, listen: false)
-        .getStock('Petr4'); // Use o símbolo desejado aqui
+        .getStock(); // Use o símbolo desejado aqui
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       endDrawer: Drawer(
@@ -264,10 +264,12 @@ class _HomeState extends State<Home> {
                 saldosMesesDiferentes.isEmpty
                     ? 'R\$ 0'
                     : formatadorMoeda.format(saldosMesesDiferentes.last.valor),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFFFFFFFF),
+                  color: themeProvider.obterTema().brightness == Brightness.dark
+                      ? const Color(0xFFFFFFFF)
+                      : const Color(0xFF000000),
                 ),
               ),
               Padding(
@@ -586,7 +588,7 @@ class _HomeState extends State<Home> {
                 height: 15.0,
               ),
               Text(
-                'Cotações',
+                'Principais cotações',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               const SizedBox(
@@ -612,9 +614,6 @@ class _HomeState extends State<Home> {
                           leading: stock.logourl.isNotEmpty
                               ? SvgPicture.network(
                                   stock.logourl,
-                                  // Adicione mais propriedades aqui, se necessário
-                                  width: 300,
-                                  height: 200,
                                 )
                               : null,
                           title: Text(
@@ -622,12 +621,17 @@ class _HomeState extends State<Home> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           subtitle: Text(
-                            'Price: ${stock.regularMarketPrice}',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            formatadorMoeda.format(stock.regularMarketPrice),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           trailing: Text(
-                            'Change: ${stock.regularMarketChangePercent}',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            '${stock.regularMarketChangePercent.toStringAsFixed(2)}%',
+                            style: TextStyle(
+                              color: stock.regularMarketChangePercent >= 0
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 15,
+                            ),
                           ),
                         );
                       },
