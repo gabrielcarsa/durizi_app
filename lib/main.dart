@@ -3,6 +3,7 @@ import 'package:durizi_app/providers/AporteProvider.dart';
 import 'package:durizi_app/providers/ClienteProvider.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:durizi_app/providers/SaqueProvider.dart';
+import 'package:durizi_app/providers/StockProvider.dart';
 import 'package:durizi_app/providers/TipoTemaProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,6 +33,9 @@ void main() async {
         ),
         ChangeNotifierProvider<AporteProvider>(
           create: (_) => AporteProvider(),
+        ),
+        ChangeNotifierProvider<StockProvider>(
+          create: (_) => StockProvider(),
         ),
       ],
       child: const MyApp(),

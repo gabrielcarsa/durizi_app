@@ -5,10 +5,12 @@ import 'package:durizi_app/pages/saqueScreen.dart';
 import 'package:durizi_app/pages/sobreScreen.dart';
 import 'package:durizi_app/providers/RecadoProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
+import '../providers/StockProvider.dart';
 import '../providers/TipoTemaProvider.dart';
 import '../widgets/grafico_evolucao.dart';
 
@@ -39,11 +41,9 @@ class _HomeState extends State<Home> {
 
     super.initState();
 
-    // Armazenar saldo atual
-    List<Saldo> saldoAtual = [];
     // Variável para obter o mês e ano da data de hoje
     DateTime agora = DateTime.now();
-    DateTime dozeMesesAtras = agora.subtract(Duration(days: 365));
+    DateTime dozeMesesAtras = agora.subtract(const Duration(days: 365));
 
     // Formato da data
     DateFormat formatadorData = DateFormat('dd/MM/yyyy');
@@ -67,13 +67,15 @@ class _HomeState extends State<Home> {
             }
           }
         } catch (e) {
-          print('Erro ao analisar a data: $e');
+          //print('Erro ao analisar a data: $e');
         }
       }
 
       // Converter o mapa em uma lista e ordenar por data (ordem crescente)
       saldosMesesDiferentes = saldosPorMes.values.toList()
-        ..sort((a, b) => formatadorData.parse(a.data).compareTo(formatadorData.parse(b.data)));
+        ..sort((a, b) => formatadorData
+            .parse(a.data)
+            .compareTo(formatadorData.parse(b.data)));
     }
   }
 
@@ -97,7 +99,8 @@ class _HomeState extends State<Home> {
       // Arredondando para duas casas decimais
       evolucaoSaldo = double.parse(evolucaoSaldo.toStringAsFixed(2));
     }
-
+    Provider.of<StockProvider>(context, listen: false)
+        .getStock('Petr4'); // Use o símbolo desejado aqui
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       endDrawer: Drawer(
@@ -245,7 +248,6 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-          height: MediaQuery.of(context).size.height * 1,
           width: MediaQuery.of(context).size.width * 1,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,15 +582,59 @@ class _HomeState extends State<Home> {
                         );
                 },
               ),
-              /*
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30.0),
-                child: Container(
-                  height: 215,
-                  width: MediaQuery.of(context).size.width * 1,
-                  alignment: Alignment.center,
+              const SizedBox(
+                height: 15.0,
+              ),
+              Text(
+                'Cotações',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              SizedBox(
+                height: 200.0, // Defina a altura desejada
+                child: Consumer<StockProvider>(
+                  builder: (context, stockProvider, child) {
+                    if (stockProvider.isLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (stockProvider.errorMessage != null) {
+                      return Center(child: Text(stockProvider.errorMessage!));
+                    }
+
+                    return ListView.builder(
+                      itemCount: stockProvider.stocks.length,
+                      itemBuilder: (context, index) {
+                        final stock = stockProvider.stocks[index];
+                        return ListTile(
+                          leading: stock.logourl.isNotEmpty
+                              ? SvgPicture.network(
+                                  stock.logourl,
+                                  // Adicione mais propriedades aqui, se necessário
+                                  width: 300,
+                                  height: 200,
+                                )
+                              : null,
+                          title: Text(
+                            stock.symbol,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          subtitle: Text(
+                            'Price: ${stock.regularMarketPrice}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          trailing: Text(
+                            'Change: ${stock.regularMarketChangePercent}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
-              ),*/
+              ),
             ],
           ),
         ),
