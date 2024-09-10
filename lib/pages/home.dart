@@ -591,6 +591,12 @@ class _HomeState extends State<Home> {
                 'Principais cotações',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
+              Text(
+                'Veja como estão algumas ações das maiores empresas de cada setor do Brasil.',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium,
+              ),
               const SizedBox(
                 height: 5.0,
               ),
@@ -599,7 +605,7 @@ class _HomeState extends State<Home> {
                 child: Consumer<StockProvider>(
                   builder: (context, stockProvider, child) {
                     if (stockProvider.isLoading) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
 
                     if (stockProvider.errorMessage != null) {

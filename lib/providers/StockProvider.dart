@@ -16,9 +16,11 @@ class StockProvider with ChangeNotifier {
     notifyListeners();
 
     List<String> symbols = [
-      'petr4',
-      'bbas3',
       'itub4',
+      'petr4',
+      'ggbr4',
+      'vale3',
+      'abev3',
     ];
 
     try {
@@ -54,5 +56,6 @@ class StockProvider with ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
+    return null;
   }
 }
