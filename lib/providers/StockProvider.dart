@@ -13,7 +13,6 @@ class StockProvider with ChangeNotifier {
 
   Future<Stock?> getStock() async {
     isLoading = true;
-    notifyListeners();
 
     List<String> symbols = [
       'itub4',
