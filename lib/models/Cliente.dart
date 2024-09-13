@@ -4,6 +4,7 @@ class Cliente {
   final String cpf;
   final String dataNascimento;
   final String rg;
+  final String senha;
   final Endereco endereco;
   List<Saldo>? saldo;
   double reajusteDiario;
@@ -14,6 +15,7 @@ class Cliente {
     required this.cpf,
     required this.dataNascimento,
     required this.rg,
+    required this.senha,
     required this.endereco,
     this.saldo,
     required this.reajusteDiario,
@@ -25,6 +27,7 @@ class Cliente {
         dataNascimento = json['data_nascimento'],
         nome = json['nome'],
         rg = json['rg'],
+        senha = json['senha'],
         reajusteDiario = json['reajusteDiario'],
         endereco = Endereco.fromJson(json['endereco']),
         saldo = json['saldo'] != null
@@ -44,6 +47,7 @@ class Cliente {
         'data_nascimento': dataNascimento,
         'nome': nome,
         'rg': rg,
+        'senha': senha,
         'reajusteDiario': reajusteDiario,
         'endereco': endereco.toJson(),
         'saldo': saldo?.map((saldo) => saldo.toJson()).toList(),
