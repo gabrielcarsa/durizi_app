@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
             .then((e) {
           setState(() {
             if (e == null) {
-              msgError = 'Cliente não encontrado!';
+              msgError = 'CPF ou senha estão incorretos.';
               _isLoadingLogin = false;
             } else {
               msgError = '';
@@ -227,7 +227,7 @@ class _LoginState extends State<Login> {
                           style: const TextStyle(color: Colors.black),
                           decoration: const InputDecoration(
                             filled: true,
-                            hintText: 'Digite seu CPF...',
+                            hintText: 'Digite seu CPF',
                             fillColor: Colors.white,
                             border: OutlineInputBorder(),
                           ),
@@ -246,11 +246,12 @@ class _LoginState extends State<Login> {
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: TextFormField(
                           controller: _senhaController,
-                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: true,
+                          keyboardType: TextInputType.text,
                           style: const TextStyle(color: Colors.black),
                           decoration: const InputDecoration(
                             filled: true,
-                            hintText: 'Sua senha',
+                            hintText: 'Digite sua senha',
                             fillColor: Colors.white,
                             border: OutlineInputBorder(),
                           ),
