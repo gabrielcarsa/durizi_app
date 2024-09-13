@@ -20,7 +20,6 @@ class ClientesProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-
   ClientesProvider() {
     _clientesRef = _database.child('clientes');
     _loadClientes();
@@ -29,7 +28,8 @@ class ClientesProvider extends ChangeNotifier {
   // exibir Clientes
   Future<void> _loadClientes() async {
     _clientesRef.onValue.listen((event) {
-      final data = jsonDecode(jsonEncode(event.snapshot.value)); //solução _InternalLinkedHashMap<Object>
+      final data = jsonDecode(jsonEncode(
+          event.snapshot.value)); //solução _InternalLinkedHashMap<Object>
       if (data != null && data is Map) {
         _clientes = data.entries
             .map((entry) => Cliente.fromJson(entry.value, entry.key))
@@ -47,35 +47,16 @@ class ClientesProvider extends ChangeNotifier {
       // Verifica se algum cliente na lista possui o CPF fornecido
       final clienteComCPF = _clientes.firstWhere((c) => c.cpf == cpf);
 
-      if (clienteComCPF != null) {
+      _clienteAtual = clienteComCPF;
+      return clienteComCPF;
 
-        // Ordenar a lista de saldos por data
-        clienteComCPF.saldo?.sort((a, b) {
-          // Dividir as strings de data em partes
-          List<String> partesDataA = a.data.split('/');
-          List<String> partesDataB = b.data.split('/');
-
-          // Construir objetos DateTime a partir das partes da data
-          DateTime dataA = DateTime(int.parse(partesDataA[2]),
-              int.parse(partesDataA[1]), int.parse(partesDataA[0]));
-          DateTime dataB = DateTime(int.parse(partesDataB[2]),
-              int.parse(partesDataB[1]), int.parse(partesDataB[0]));
-
-          // Comparar as datas e retornar o resultado
-          return dataA.compareTo(dataB);
-        });
-        print(clienteComCPF.nome);
-
-        _clienteAtual = clienteComCPF;
-        return clienteComCPF;
-      }
     } catch (e) {
       return null;
     }
   }
 
   // deslogar
-  void logout(){
+  void logout() {
     _clienteAtual = null;
     notifyListeners();
   }
@@ -84,11 +65,11 @@ class ClientesProvider extends ChangeNotifier {
   Future<String?> obterPDFUrlFromStorage(String idCliente) async {
     try {
       Reference pdfReference =
-      FirebaseStorage.instance.ref().child('contratos/$idCliente.pdf');
+          FirebaseStorage.instance.ref().child('contratos/$idCliente.pdf');
       String pdfUrl = await pdfReference.getDownloadURL();
       return pdfUrl;
     } catch (e) {
-      print('Erro ao obter URL do PDF do Storage: $e');
+      //print('Erro ao obter URL do PDF do Storage: $e');
       return null;
     }
   }
