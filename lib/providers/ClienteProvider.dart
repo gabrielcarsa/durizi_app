@@ -42,10 +42,10 @@ class ClientesProvider extends ChangeNotifier {
   }
 
   // Logar com CPF
-  Future<Cliente?> consultarCPFExistente(String cpf) async {
+  Future<Cliente?> consultarCPFExistente(String cpf, String senha) async {
     try {
       // Verifica se algum cliente na lista possui o CPF fornecido
-      final clienteComCPF = _clientes.firstWhere((c) => c.cpf == cpf);
+      final clienteComCPF = _clientes.firstWhere((c) => c.cpf == cpf && c.senha == senha);
 
       _clienteAtual = clienteComCPF;
       return clienteComCPF;

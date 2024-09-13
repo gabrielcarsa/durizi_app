@@ -24,6 +24,7 @@ class _LoginState extends State<Login> {
   //controller dos campos do form
   final TextEditingController _cpfController =
       MaskedTextController(mask: '000.000.000-00');
+  final TextEditingController _senhaController = TextEditingController();
 
   //form
   final _formKey = GlobalKey<FormState>();
@@ -44,7 +45,9 @@ class _LoginState extends State<Login> {
         String cpfFormatado =
             _cpfController.text.replaceAll('.', '').replaceAll('-', '');
 
-        clienteProvider.consultarCPFExistente(cpfFormatado).then((e) {
+        clienteProvider
+            .consultarCPFExistente(cpfFormatado, _senhaController.text)
+            .then((e) {
           setState(() {
             if (e == null) {
               msgError = 'Cliente não encontrado!';
@@ -98,18 +101,24 @@ class _LoginState extends State<Login> {
             Container(
               alignment: Alignment.center,
               height: MediaQuery.of(context).viewInsets.bottom == 0
-                  ? MediaQuery.of(context).size.height * 0.7
-                  : MediaQuery.of(context).size.height * 0.3,
+                  ? MediaQuery.of(context).size.height * 0.6
+                  : MediaQuery.of(context).size.height * 0.2,
               color: Theme.of(context).scaffoldBackgroundColor,
-              padding: const EdgeInsets.all(15),
+              padding: MediaQuery.of(context).viewInsets.bottom == 0
+                  ? const EdgeInsets.all(30)
+                  : const EdgeInsets.all(0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   themeProvider.obterTema().brightness == Brightness.dark
                       ? Container(
-                          height: 150.0,
-                          width: 150.0,
+                          height: MediaQuery.of(context).viewInsets.bottom == 0
+                              ? 150.0
+                              : 120,
+                          width: MediaQuery.of(context).viewInsets.bottom == 0
+                              ? 150.0
+                              : 120,
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
@@ -120,8 +129,12 @@ class _LoginState extends State<Login> {
                           ),
                         )
                       : Container(
-                          height: 150.0,
-                          width: 150.0,
+                          height: MediaQuery.of(context).viewInsets.bottom == 0
+                              ? 150.0
+                              : 120,
+                          width: MediaQuery.of(context).viewInsets.bottom == 0
+                              ? 150.0
+                              : 120,
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
@@ -130,8 +143,9 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         ),
-                  const SizedBox(
-                    height: 30,
+                  SizedBox(
+                    height:
+                        MediaQuery.of(context).viewInsets.bottom == 0 ? 30 : 0,
                   ),
                   MediaQuery.of(context).viewInsets.bottom == 0
                       ? RichText(
@@ -220,6 +234,29 @@ class _LoginState extends State<Login> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Preencha o CPF';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: TextFormField(
+                          controller: _senhaController,
+                          keyboardType: TextInputType.visiblePassword,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            filled: true,
+                            hintText: 'Sua senha',
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Preencha sua senha';
                             }
                             return null;
                           },
