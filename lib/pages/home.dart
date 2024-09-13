@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:durizi_app/pages/alterarSenha.dart';
 import 'package:durizi_app/pages/aporteScreen.dart';
 import 'package:durizi_app/pages/contratoScreen.dart';
 import 'package:durizi_app/pages/saqueScreen.dart';
@@ -175,6 +176,32 @@ class _HomeState extends State<Home> {
               onTap: () {
                 //alterar tema
                 themeProvider.alterarTema();
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.password,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    'Alterar senha',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+              onTap: () {
+                //logout
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AlterarSenha(),
+                  ),
+                );
               },
             ),
             ListTile(
