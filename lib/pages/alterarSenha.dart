@@ -47,6 +47,35 @@ class _AlterarSenhaState extends State<AlterarSenha> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 5.0),
+                          child: Text(
+                            'Alteração da sua senha de acesso do aplicativo Durizi Investimentos.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 5.0),
+                          child: Text(
+                            'Para sua segurança recomendamos algumas medidas (não obrigatórias):',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 5.0),
+                          child: Text(
+                            ' - Não use senhas repetidas.\n'
+                            ' - Evite data de aniverśario e seu nome próprio.\n'
+                            ' - Mínimo de 6 caracteres.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: TextFormField(
