@@ -4,7 +4,7 @@ class Cliente {
   final String cpf;
   final String dataNascimento;
   final String rg;
-  final String senha;
+  String senha;
   final Endereco endereco;
   List<Saldo>? saldo;
   double reajusteDiario;
@@ -56,6 +56,10 @@ class Cliente {
   //setters
   void setReajusteDiario(double value) {
     reajusteDiario = value;
+  }
+
+  void setSenha(String value) {
+    senha = value;
   }
 }
 

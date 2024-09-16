@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/Cliente.dart';
 import '../providers/ClienteProvider.dart';
 import 'home.dart';
 
@@ -74,12 +75,14 @@ class _AlterarSenhaState extends State<AlterarSenha> {
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: ElevatedButton(
                             onPressed: () {
+                              Cliente clienteId = clienteProvider.clienteAtual!;
+
                               // Se os campos forem válidos
                               if (_formKey.currentState!.validate()) {
-                                // Salvando Aporte no Firebase
-                                /*Provider.of<AporteProvider>(context,
+                                // Salvando Senha no Firebase
+                                Provider.of<ClientesProvider>(context,
                                         listen: false)
-                                    .adicionarAporte(aporteSalvar);*/
+                                    .alterarSenha(clienteId, _senhaController.text);
                               }
                             },
                             style: ButtonStyle(

@@ -110,4 +110,27 @@ class ClientesProvider extends ChangeNotifier {
       }
     }
   }
+
+  // Editar senha cliente
+  Future<void> alterarSenha(Cliente cliente, String novaSenha) async {
+    // Verifica se o cliente existe na lista
+    final clienteIndex = _clientes.indexWhere((c) => c.id == cliente.id);
+    if (clienteIndex != -1) {
+      try {
+        // Atualiza a senha no Firebase Realtime Database
+        await _clientesRef
+            .child(cliente.id!)
+            .child('senha')
+            .set(novaSenha);
+
+        // Atualiza a senha localmente (se necessário)
+        _clientes[clienteIndex].senha = novaSenha;
+        notifyListeners();
+
+        print('Senha alterada com sucesso!');
+      } catch (e) {
+        print('Erro ao alterar a senha: $e');
+      }
+    }
+  }
 }
