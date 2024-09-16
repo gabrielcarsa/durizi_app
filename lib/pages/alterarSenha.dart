@@ -74,15 +74,48 @@ class _AlterarSenhaState extends State<AlterarSenha> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: ElevatedButton(
-                            onPressed: () {
-                              Cliente clienteId = clienteProvider.clienteAtual!;
+                            onPressed: () async {
+                              Cliente clienteAtual =
+                                  clienteProvider.clienteAtual!;
 
                               // Se os campos forem válidos
                               if (_formKey.currentState!.validate()) {
+                                // Mostra um indicador de carregamento enquanto a operação está em andamento (opcional)
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                );
+
                                 // Salvando Senha no Firebase
-                                Provider.of<ClientesProvider>(context,
-                                        listen: false)
-                                    .alterarSenha(clienteId, _senhaController.text);
+                                bool sucesso =
+                                    await Provider.of<ClientesProvider>(context,
+                                            listen: false)
+                                        .alterarSenha(clienteAtual,
+                                            _senhaController.text);
+
+                                // Fechar o indicador de carregamento
+                                Navigator.of(context).pop();
+
+                                // Exibir mensagem de sucesso ou erro
+                                if (sucesso) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Senha alterada com sucesso!'),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Erro ao alterar a senha.'),
+                                    ),
+                                  );
+                                }
                               }
                             },
                             style: ButtonStyle(

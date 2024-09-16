@@ -112,7 +112,7 @@ class ClientesProvider extends ChangeNotifier {
   }
 
   // Editar senha cliente
-  Future<void> alterarSenha(Cliente cliente, String novaSenha) async {
+  Future<bool> alterarSenha(Cliente cliente, String novaSenha) async {
     // Verifica se o cliente existe na lista
     final clienteIndex = _clientes.indexWhere((c) => c.id == cliente.id);
     if (clienteIndex != -1) {
@@ -127,10 +127,13 @@ class ClientesProvider extends ChangeNotifier {
         _clientes[clienteIndex].senha = novaSenha;
         notifyListeners();
 
-        print('Senha alterada com sucesso!');
+        return true;
+        //print('Senha alterada com sucesso!');
       } catch (e) {
-        print('Erro ao alterar a senha: $e');
+        return false;
+        //print('Erro ao alterar a senha: $e');
       }
     }
+    return false;
   }
 }
