@@ -55,191 +55,193 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
   // Tela de formulário
   Widget buildFormScreen() {
     final themeProvider = Provider.of<TipoTemaProvider>(context);
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 1,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Text(
-                'Nossa calculadora de juros compostos',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 26.0,
-                  fontWeight: FontWeight.w700,
-                  color: themeProvider.obterTema().brightness == Brightness.dark
-                      ? const Color(0xFFFFFFFF)
-                      : const Color(0xFF000000),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Align(
-                alignment: Alignment.centerLeft,
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 1,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Text(
-                  'Valor inicial (R\$)',
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: TextFormField(
-                controller: _valorController,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Preencha o valor';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Valor mensal (R\$)',
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: TextFormField(
-                controller: _valorMensalController,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Preencha o valor';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Taxa de juros (% ao mês)',
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: TextFormField(
-                controller: _taxaJurosController,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  hintText: 'Ex.: 3',
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Preencha o valor';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Período em meses',
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: TextFormField(
-                controller: _periodoMeses,
-                keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  filled: true,
-                  hintText: 'Ex.: 24',
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Preencha o valor';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Se os campos forem válidos
-                  if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      _telaResultado = true;
-                    });
-                  }
-                },
-                style: ButtonStyle(
-                  padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(vertical: 5),
+                  'Nossa calculadora de juros compostos',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 26.0,
+                    fontWeight: FontWeight.w700,
+                    color: themeProvider.obterTema().brightness == Brightness.dark
+                        ? const Color(0xFFFFFFFF)
+                        : const Color(0xFF000000),
                   ),
-                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Valor inicial (R\$)',
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextFormField(
+                  controller: _valorController,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o valor';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Valor mensal (R\$)',
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextFormField(
+                  controller: _valorMensalController,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o valor';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Taxa de juros (% ao mês)',
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextFormField(
+                  controller: _taxaJurosController,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    hintText: 'Ex.: 3',
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o valor';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Período em meses',
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextFormField(
+                  controller: _periodoMeses,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    hintText: 'Ex.: 24',
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Preencha o valor';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Se os campos forem válidos
+                    if (_formKey.currentState!.validate()) {
+                      setState(() {
+                        _telaResultado = true;
+                      });
+                    }
+                  },
+                  style: ButtonStyle(
+                    padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 5),
                     ),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    backgroundColor:
+                        WidgetStateProperty.all(Theme.of(context).primaryColor),
                   ),
-                  backgroundColor:
-                      WidgetStateProperty.all(Theme.of(context).primaryColor),
-                ),
-                child: Text(
-                  'Simular Investimento',
-                  style: Theme.of(context).textTheme.labelLarge,
+                  child: Text(
+                    'Simular Investimento',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
