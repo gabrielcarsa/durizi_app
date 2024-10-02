@@ -23,6 +23,10 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
   //controller
   final TextEditingController _valorController =
       MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
+  final TextEditingController _valorMensalController =
+      MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
+  final TextEditingController _taxaJurosController = TextEditingController();
+  final TextEditingController _periodoMeses = TextEditingController();
 
   //form
   final _formKey = GlobalKey<FormState>();
@@ -61,7 +65,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Text(
-                'Vamos dar os primeiros passos, quanto você deseja investir inicialmente?',
+                'Nossa calculadora de juros compostos',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26.0,
@@ -74,13 +78,124 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Valor inicial (R\$)',
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
               child: TextFormField(
                 controller: _valorController,
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   filled: true,
-                  hintText: 'Quanto você deseja investir?',
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o valor';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Valor mensal (R\$)',
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: TextFormField(
+                controller: _valorMensalController,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o valor';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Taxa de juros (% ao mês)',
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: TextFormField(
+                controller: _taxaJurosController,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  filled: true,
+                  hintText: 'Ex.: 3',
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Preencha o valor';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Período em meses',
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: TextFormField(
+                controller: _periodoMeses,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  filled: true,
+                  hintText: 'Ex.: 24',
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
                 ),
@@ -107,37 +222,21 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                   }
                 },
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
+                  padding: WidgetStateProperty.all(
                     const EdgeInsets.symmetric(vertical: 5),
                   ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).primaryColor),
+                      WidgetStateProperty.all(Theme.of(context).primaryColor),
                 ),
                 child: Text(
                   'Simular Investimento',
                   style: Theme.of(context).textTheme.labelLarge,
                 ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      '*A simulação não leva em consideração aportes regulares. Para saber mais fale conosco.',
-                      textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                ],
               ),
             ),
           ],
@@ -148,17 +247,35 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
 
   //Tela de resultados
   Widget buildResultScreen() {
-    String valorFormatado =
+    //Valores Campos
+    String valorInicialFormatado =
         _valorController.text.replaceAll('.', '').replaceAll(',', '.');
-    //valores da simulação
-    double valorInicial = double.parse(valorFormatado);
-    double valor1Meses = (valorInicial * 0.03);
-    double valor3Meses = (valorInicial * pow(1 + 0.03, 3)) - valorInicial;
-    double valor6Meses = (valorInicial * pow(1 + 0.03, 6)) - valorInicial;
-    double valor9Meses = (valorInicial * pow(1 + 0.03, 9)) - valorInicial;
-    double valor12Meses = (valorInicial * pow(1 + 0.03, 12)) - valorInicial;
-    double valor18Meses = (valorInicial * pow(1 + 0.03, 18)) - valorInicial;
-    double valor24Meses = (valorInicial * pow(1 + 0.03, 24)) - valorInicial;
+
+    String valorMensalFormatado =
+        _valorMensalController.text.replaceAll('.', '').replaceAll(',', '.');
+
+    String taxaJurosMensalFormatado = _taxaJurosController.text;
+    String periodoMesesFormatado = _periodoMeses.text;
+
+    //Convertendo para double
+    double valorInicial = double.parse(valorInicialFormatado);
+    double valorMensal = double.parse(valorMensalFormatado);
+    int periodoMeses = int.parse(periodoMesesFormatado);
+    double taxaJurosMensal = double.parse(taxaJurosMensalFormatado);
+    taxaJurosMensal = taxaJurosMensal / 100;
+
+    // Função para calcular o montante com aportes mensais
+    double calcularMontante(
+        double valorInicial, double valorMensal, double taxa, int meses) {
+      return valorInicial * pow(1 + taxa, meses) +
+          valorMensal * ((pow(1 + taxa, meses) - 1) / taxa);
+    }
+
+    // Valores
+    double valorMontante = calcularMontante(
+        valorInicial, valorMensal, taxaJurosMensal, periodoMeses);
+    double valorInvestidoTotal = valorInicial + (valorMensal * periodoMeses);
+    double valorJurosTotal = valorMontante - valorInvestidoTotal;
 
     final themeProvider = Provider.of<TipoTemaProvider>(context);
 
@@ -168,9 +285,9 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Text(
-              'Investindo ${formatadorMoeda.format(double.parse(valorFormatado))}\n você obterá:',
+              'Investindo inicialmente ${formatadorMoeda.format(double.parse(valorInicialFormatado))} você obterá:',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 26.0,
@@ -208,7 +325,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                       Row(
                         children: [
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
                               'Período',
                               textAlign: TextAlign.start,
@@ -218,9 +335,34 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              'Rendimento',
+                              'Total investido',
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              periodoMeses > 1
+                                  ? '$periodoMesesFormatado meses'
+                                  : '$periodoMesesFormatado mês',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              formatadorMoeda.format(valorInvestidoTotal),
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
@@ -231,9 +373,32 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                       Row(
                         children: [
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
-                              'em 1 mês',
+                              'Taxa de juros (%)',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Total de juros',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              '$taxaJurosMensalFormatado%',
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
@@ -241,19 +406,45 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              formatadorMoeda.format(valor1Meses),
+                              formatadorMoeda.format(valorJurosTotal),
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
                       Row(
                         children: [
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: Text(
-                              'em 3 meses',
+                              'Valor mensal',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              'Valor inicial',
+                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.displaySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              formatadorMoeda.format(valorMensal),
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
@@ -261,110 +452,47 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              formatadorMoeda.format(valor3Meses),
+                              formatadorMoeda.format(valorInicial),
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              'em 6 meses',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              formatadorMoeda.format(valor6Meses),
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
+                          Text(
+                            'Valor total final',
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              'em 9 meses',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              formatadorMoeda.format(valor9Meses),
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(
+                        height: 5.0,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              'em 1 ano',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              formatadorMoeda.format(valor12Meses),
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              'em 1 e 6 meses',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              formatadorMoeda.format(valor18Meses),
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              'em 2 anos',
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              formatadorMoeda.format(valor24Meses),
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
+                          Text(
+                            formatadorMoeda.format(valorMontante),
+                            textAlign: TextAlign.start,
+                            style: Theme.of(context).textTheme.displaySmall,
                           ),
                         ],
                       ),
@@ -387,16 +515,16 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                 });
               },
               style: ButtonStyle(
-                padding: MaterialStateProperty.all(
+                padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(vertical: 5),
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
                 backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).indicatorColor),
+                    WidgetStateProperty.all(Theme.of(context).indicatorColor),
               ),
               child: Text(
                 'Simular outro valor',
