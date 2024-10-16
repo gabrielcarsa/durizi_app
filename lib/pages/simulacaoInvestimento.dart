@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:durizi_app/widgets/grafico_pizza.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:intl/intl.dart';
@@ -71,9 +72,10 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
                   style: TextStyle(
                     fontSize: 26.0,
                     fontWeight: FontWeight.w700,
-                    color: themeProvider.obterTema().brightness == Brightness.dark
-                        ? const Color(0xFFFFFFFF)
-                        : const Color(0xFF000000),
+                    color:
+                        themeProvider.obterTema().brightness == Brightness.dark
+                            ? const Color(0xFFFFFFFF)
+                            : const Color(0xFF000000),
                   ),
                 ),
               ),
@@ -281,8 +283,7 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
 
     final themeProvider = Provider.of<TipoTemaProvider>(context);
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 1,
+    return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -539,6 +540,36 @@ class _SimulacaoInvestimentoState extends State<SimulacaoInvestimento> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 30,
+          ),
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1.5,
+                color: Theme.of(context).indicatorColor.withOpacity(0.2),
+              ),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Gráfico',
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                  ],
+                ),
+                GraficoPizza(
+                  totalInvestido: valorInvestidoTotal,
+                  totalJuros: valorJurosTotal,
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
