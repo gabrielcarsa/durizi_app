@@ -28,7 +28,7 @@ class Cliente {
         nome = json['nome'],
         rg = json['rg'],
         senha = json['senha'],
-        reajusteDiario = json['reajusteDiario'],
+        reajusteDiario = (json['reajusteDiario'] as num).toDouble(),
         endereco = Endereco.fromJson(json['endereco']),
         saldo = json['saldo'] != null
             ? (json['saldo'] is List
@@ -67,7 +67,7 @@ class Endereco {
   final String bairro;
   final String cep;
   final String complemento;
-  final int numero;
+  final String numero;
   final String cidade;
   final String estado;
   final String rua;
